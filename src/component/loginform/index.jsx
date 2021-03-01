@@ -24,8 +24,28 @@ export default class LoginForm extends Component {
           rules={[
             {
               required: true,
-              message: "Please input your Username!",
+              message: "请输入用户名!",
             },
+            // {
+            //      min:3,
+            //      message: "最小5位",    
+            //   },                    
+            // {
+            //     max:15,
+            //     message: "最大10位",    
+            //  },
+            {
+              validator:async(rule,value,callback)=>{
+                const reg =new RegExp("[\\u4E00-\\u9FFF]+","g")
+                if(reg.test(value)&&value.length>5){
+                  callback("中文最多5位");
+                }else if(value.length>10){
+                  callback('非中文最多10位')
+                }else{
+                  callback();
+                }
+              }
+            }
           ]}
         >
           <Input
