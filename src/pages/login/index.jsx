@@ -3,8 +3,9 @@ import React, { Component } from "react";
 // import { PageHeader } from "antd";
 // import { Layout } from "antd";
 import logo from "./image/logo.png";
+
 // const { Header, Footer, Sider, Content } = Layout;
-import LoginForm from '../../component/loginform'
+import LoginForm from '../../component/loginForm'
 export default class Login extends Component {
   render() {
     return (

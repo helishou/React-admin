@@ -1,18 +1,24 @@
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 import React, { Component } from "react";
 import './index.less'
+import {reqLogin} from '../../api/index.js'
 export default class LoginForm extends Component {
   onFinish = (values) => {
     console.log('Received values of form: ', values);
     // 
-
+    const {username,password} = values;
+    reqLogin(username,password).then(response=>{
+      console.log('成功了',response.data)
+    }).catch(error=>{
+      console.log('失败了',error.message)}
+    );
   };
   onFinishFailed=(values, errorFields, outOfDate)=>{
     console.log('校验失败')
     values.errorFields.map(x=>{
-      console.log(x.errors)
+      return console.log(x.errors)
     })
     // console.log('value------',values)
   }

@@ -9,9 +9,9 @@ export default function ajax(url,data={},type="GET") {
             params:data // 指定请求参数
         })
     }else{//发post请求
-        return axios.post(url,{
+        return axios.post(url,
             data
-        })
+        )
     }
 }
 
