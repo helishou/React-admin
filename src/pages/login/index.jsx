@@ -1,15 +1,13 @@
-import "./index.less";
 import React, { Component } from "react";
-// import { PageHeader } from "antd";
-// import { Layout } from "antd";
 import logo from "./image/logo.png";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-
+import {Redirect} from 'react-router-dom'
 import "./index.less";
 import { reqLogin } from "../../api/index.js";
-// const { Header, Footer, Sider, Content } = Layout;
-// import LoginForm from "../../component/loginForm";
+import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
+
 export default class Login extends Component {
   onFinish = async (values) => {
     console.log("Received values of form: ", values);
@@ -29,7 +27,10 @@ export default class Login extends Component {
         //登陆成功
         message.success("登录成功");
         //跳转到管理界面
-        console.log(this);
+        const user = result.data;
+        memoryUtils.user = user;
+        storageUtils.saveUser(user);
+        // console.log(this);
         this.props.history.push("/");
       } else {
         // 登录失败.提示错误信息
@@ -61,6 +62,12 @@ export default class Login extends Component {
     }
   };
   render() {
+    //如果用户已经登陆,自动跳转到管理页面
+    const user = memoryUtils.user;
+    if (user&&user._id) {
+      
+      return <Redirect to="/" />;
+    }
     return (
       <div className="login">
         <header className="login-header">
