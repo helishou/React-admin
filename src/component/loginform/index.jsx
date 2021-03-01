@@ -44,6 +44,7 @@ export default class LoginForm extends Component {
       >
         <Form.Item
           name="username"
+          // initialValue='username111'
           rules={[
             {
               required: true,
@@ -66,7 +67,7 @@ export default class LoginForm extends Component {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
+            placeholder="用户名"
           />
         </Form.Item>
         <Form.Item
@@ -84,7 +85,7 @@ export default class LoginForm extends Component {
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder="Password"
+            placeholder="密码"
           />
         </Form.Item>
         {/* <Form.Item>
