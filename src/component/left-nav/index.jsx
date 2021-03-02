@@ -1,36 +1,81 @@
 import React, { Component } from "react";
 import "./index.less";
-import { Menu, Switch } from "antd";
-import { Link } from "react-router-dom";
-import {
-  MailOutlined,
-  AppstoreOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { Menu } from "antd";
+import { Link,withRouter } from "react-router-dom";
 import logo from "../../assets/image/logo.png";
+import menuList from "../../config/menuConfig";
 /* 
 左侧导航的组件
  */
 const { SubMenu } = Menu;
-export default class LeftNav extends Component {
-  state = {
-    theme: "dark",
-    current: "1",
-  };
+ class LeftNav extends Component {
+  // state = {
+  //   current: "1",
+  // };
+  getMenuNodes_map=(menuList) =>{
+    // map加递归
+    return menuList.map(item=>{
+      /* 
+      title
+      key
+      icon
+      chilren 可能有 */
+      if(!item.children){
+        return (
+        <Menu.Item key={item.key} icon={item.icon}>
+            <Link to={item.key}>{item.title}</Link>
+          </Menu.Item>)
+      }else{
+        return(
+          <SubMenu key={item.key} icon={item.icon} title={item.title}>
+            {this.getMenuNodes(item.children)}
+          </SubMenu>
+        )
+      }
+    })
+  }
+  //改用reduce调用
+  getMenuNodes= menuList=>{
+    const path = this.props.location.pathname
+    return menuList.reduce((pre,item)=>{
+      //像pre中添加《item》或者《submenu》
+      if(!item.children){
+        pre.push(
+        <Menu.Item key={item.key} icon={item.icon}>
+            <Link to={item.key}>{item.title}</Link>
+          </Menu.Item>)
+      }else{
+        const cItem=item.children.find(cItem => cItem.key===path)
+        //如果存在，说明当前item的子列表需要打开
+        if(cItem){
+          this.openkey = item.key
+        }
 
-  changeTheme = (value) => {
-    this.setState({
-      theme: value ? "dark" : "light",
-    });
-  };
-
+        pre.push(
+          <SubMenu key={item.key} icon={item.icon} title={item.title}>
+          {this.getMenuNodes(item.children)}
+        </SubMenu>
+        )
+      }
+      return pre//记住return pre
+    },[])
+  }
   handleClick = (e) => {
     console.log("click ", e);
     this.setState({
       current: e.key,
     });
   };
+  //在第一次render之前执行一次，为第一次render准备数据（必须同步）
+  UNSAFE_componentWillMount(){
+    this.menuNodes = this.getMenuNodes(menuList)
+    
+  }
   render() {
+    console.log(this)
+    const path = this.props.location.pathname
+    const openkey = this.openkey
+    // this.setState({current:path})
     return (
       <>
         <div>
@@ -40,56 +85,20 @@ export default class LeftNav extends Component {
           </Link>
         </div>
 
-        <br />
-
-        <Switch
-          checked={this.state.theme === "dark"}
-          onChange={this.changeTheme}
-          checkedChildren="Dark"
-          unCheckedChildren="Light"
-        />
-        <br />
+        {/* <br />
+        <br /> */}
         <Menu
-          theme={this.state.theme}
+          theme="dark"
           onClick={this.handleClick}
           style={{ width: 200 }}
-          defaultOpenKeys={["sub1"]}
-          selectedKeys={[this.state.current]}
+          defaultOpenKeys={[openkey]}
+          selectedKeys={[path]}
           mode="inline"
         >
-          <Menu.Item key="1" icon={<MailOutlined />}>
-            <Link to="/home">首页</Link>
-          </Menu.Item>
-
-          <SubMenu key="sub1" icon={<MailOutlined />} title="商品">
-            <Menu.Item key="1" icon={<MailOutlined />}>
-              <Link to="/category">品类管理</Link>
-            </Menu.Item>
-
-            <Menu.Item key="2" icon={<MailOutlined />}>
-              <Link to="/product">商品管理</Link>
-            </Menu.Item>
-          </SubMenu>
-
-          <Menu.Item key="3" icon={<MailOutlined />}>
-            <Link to="/users">用户管理</Link>
-          </Menu.Item>
-          <Menu.Item key="4" icon={<MailOutlined />}>
-            <Link to="/role">角色管理</Link>
-          </Menu.Item>
-          <SubMenu key="sub4" icon={<SettingOutlined />} title="图形图标">
-            <Menu.Item key="5" icon={<MailOutlined />}>
-              <Link to="/charts/bar">线图</Link>
-            </Menu.Item>
-            <Menu.Item key="6" icon={<MailOutlined />}>
-              <Link to="/charts/pie">饼图</Link>
-            </Menu.Item>
-            <Menu.Item key="7" icon={<MailOutlined />}>
-              <Link to="/charts/line">折线图</Link>
-            </Menu.Item>
-          </SubMenu>
+          {this.menuNodes}
         </Menu>
       </>
     );
   }
 }
+export default withRouter(LeftNav)

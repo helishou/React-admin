@@ -8,6 +8,11 @@ module.exports = override(
     libraryDirectory: "es",
     style: "css",
   }),
+  // fixBabelImports("import", {
+  //   libraryName: "@ant-design",
+  //   libraryDirectory: "icons/es",
+  //   style: "js",
+  // }),
   addLessLoader({
     strictMath: true,
     noIeCompat: true,
