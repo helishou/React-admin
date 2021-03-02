@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from "./image/logo.png";
+import logo from "../../assets/image/logo.png";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import {Redirect} from 'react-router-dom'
