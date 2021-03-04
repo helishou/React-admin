@@ -20,7 +20,7 @@ export const reqWeather = (city) => {
     jsonp(url, {}, (err, data) => {
     //   console.log(err, data);
       if (!err && data.status === "1") {
-        const { temperature, weather } = data.lives[0];
+        const {  weather } = data.lives[0];
         resolve({ weather});
       }else{
           message.error('天气获取失败')
@@ -28,5 +28,6 @@ export const reqWeather = (city) => {
     });
   });
 };
-
+// 获取一级二级分类列表
+export const reqCategorys = (parentId ) => ajax( '/manage/category/list',{parentId},'post')
 // reqWeather("北京");

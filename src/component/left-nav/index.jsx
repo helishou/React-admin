@@ -72,7 +72,7 @@ const { SubMenu } = Menu;
     
   }
   render() {
-    console.log(this)
+    // console.log(this)
     const path = this.props.location.pathname
     const openkey = this.openkey
     // this.setState({current:path})
