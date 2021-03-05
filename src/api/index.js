@@ -29,5 +29,8 @@ export const reqWeather = (city) => {
   });
 };
 // 获取一级二级分类列表
-export const reqCategorys = (parentId ) => ajax( '/manage/category/list',{parentId},'post')
+export const reqCategorys = (parentId ) => ajax( '/manage/category/list',{parentId})
 // reqWeather("北京");
+export const reqAddCategory = ( categoryName,parentId) => ajax( '/manage/category/add',{categoryName,parentId},'post')
+
+export const reqUpdateCategory = ( categoryId,categoryName) => ajax( '/manage/category/update',{categoryId,categoryName},'post')

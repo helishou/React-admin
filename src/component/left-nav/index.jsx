@@ -77,13 +77,12 @@ const { SubMenu } = Menu;
     const openkey = this.openkey
     // this.setState({current:path})
     return (
-      <>
         <div>
           <Link to="/" className="left-nav-header">
             <img src={logo} alt="logo" />
             <h1>硅谷后台</h1>
           </Link>
-        </div>
+        
 
         {/* <br />
         <br /> */}
@@ -97,7 +96,7 @@ const { SubMenu } = Menu;
         >
           {this.menuNodes}
         </Menu>
-      </>
+        </div>
     );
   }
 }
