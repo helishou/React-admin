@@ -53,23 +53,46 @@ export default class Category extends Component {
       }
     );
   };
-  //修改后更新列表
-  updateCategory= async()=>{
-    //
-    this.setState({showStatus:0})
+  addCategotry = async () => {
+    this.setState({ showStatus: 0 });
     //发请求更新分类
-    const categoryId = this.category._id
+    // console.log(this.classes);
+    // console.log(this.input);
+    const parentId = this.classes.props.value;
     // console.log(categoryId)
-     const categoryName = this.form.state.value
-     console.log(categoryName)
-    const result = await reqUpdateCategory(categoryId,categoryName)
-    // console.log(result)
-    if(result.status===200){
-          //重新显示列表
-      this.getCategorys()
+    const categoryName = this.input.props.value;
+    //  console.log(categoryName)
+    const result = await reqAddCategory(categoryName, parentId);
+    // console.log(result);
+    if (result.status === 200) {
+      //重新显示列表
+      if(this.state.parentId===parentId){
+        this.getCategorys();//重新获取当前分类列表
+        message.success('添加成功')
+      }
+    }else{
+      message.error('添加失败')
     }
-
-  }
+  };
+  //修改后更新列表
+  updateCategory = async () => {
+    //
+    this.setState({ showStatus: 0 });
+    //发请求更新分类
+    const categoryId = this.category._id;
+    // console.log(categoryId)
+    const categoryName = this.form.state.value;
+    console.log(categoryName);
+    const result = await reqUpdateCategory(categoryId, categoryName);
+    // console.log(result)
+    if (result.status === 200) {
+      //重新显示列表
+      this.getCategorys();
+      message.success('修改成功')
+    }else{
+      message.error('修改失败')
+    }
+  };
   /* 准备数据 */
   componentWillMount() {
     // this.setState({parentId:'0'})
@@ -89,7 +112,7 @@ export default class Category extends Component {
           <span>
             <LinkButton
               onClick={() => {
-                this.category=category
+                this.category = category;
                 this.setState({ showStatus: 2 });
               }}
             >
@@ -141,7 +164,7 @@ export default class Category extends Component {
       showStatus,
     } = this.state;
 
-    const category = this.category||{} // 如果还没有,则空对象
+    const category = this.category || {}; // 如果还没有,则空对象
     const title =
       parentId === "0" ? (
         "一级分类列表"
@@ -172,7 +195,9 @@ export default class Category extends Component {
       <Card title={title} extra={extra}>
         <Table
           rowKey="_id"
-          pagination={{ pageSize: 5, total: 50 }}
+          pagination={{ pageSize: 5
+            // , total: 50 
+          }}
           dataSource={parentId === "0" ? categorys : subCategorys}
           columns={this.columns}
           loading={this.state.loading}
@@ -180,21 +205,34 @@ export default class Category extends Component {
         <Modal
           title="添加分类"
           visible={showStatus === 1}
-          onOk={this.reqAddCategory}
+          onOk={this.addCategotry}
           onCancel={this.handleCancel}
           destroyOnClose={true}
         >
-          <AddForm />
+          <AddForm
+            categorys={categorys}
+            categoryName
+            setClasses={(classes) => {
+              this.classes = classes;
+            }}
+            setInput={(input) => {
+              this.input = input;
+            }}
+          />
         </Modal>
         <Modal
           title="修改分类"
           visible={showStatus === 2}
-          onOk={this.reqUpdateCategory}
           onCancel={this.handleCancel}
           destroyOnClose={true} //让对话框关闭时候清空输入值
           onOk={this.updateCategory}
         >
-          <UpdateForm category={category.name} setForm={(form)=>{this.form=form}}/>
+          <UpdateForm
+            category={category.name}
+            setForm={(form) => {
+              this.form = form;
+            }}
+          />
         </Modal>
       </Card>
     );
