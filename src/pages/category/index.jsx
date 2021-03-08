@@ -8,8 +8,8 @@ import {
   reqUpdateCategory,
   reqAddCategory,
 } from "../../api/index";
-import AddForm from "../../component/AddForm";
-import UpdateForm from "../../component/UpdateForm";
+import AddForm from "./addform";
+import UpdateForm from "./updateform";
 export default class Category extends Component {
   state = {
     categorys: [],
@@ -61,12 +61,17 @@ export default class Category extends Component {
     const parentId = this.classes.props.value;
     // console.log(categoryId)
     const categoryName = this.input.props.value;
+    if(!categoryName){
+      message.error('名称不能为空!')
+      return
+    }
     //  console.log(categoryName)
     const result = await reqAddCategory(categoryName, parentId);
     // console.log(result);
     if (result.status === 200) {
       //重新显示列表
-      if(this.state.parentId===parentId){
+      // console.log('parentid',parentId)
+      if(!parentId){
         this.getCategorys();//重新获取当前分类列表
         message.success('添加成功')
       }
@@ -82,7 +87,11 @@ export default class Category extends Component {
     const categoryId = this.category._id;
     // console.log(categoryId)
     const categoryName = this.form.state.value;
-    console.log(categoryName);
+    if(!categoryName){
+      message.error('名称不能为空!')
+      return
+    }
+    // console.log(categoryName);
     const result = await reqUpdateCategory(categoryId, categoryName);
     // console.log(result)
     if (result.status === 200) {

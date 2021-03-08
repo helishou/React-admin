@@ -34,3 +34,5 @@ export const reqCategorys = (parentId ) => ajax( '/manage/category/list',{parent
 export const reqAddCategory = ( categoryName,parentId) => ajax( '/manage/category/add',{categoryName,parentId},'post')
 
 export const reqUpdateCategory = ( categoryId,categoryName) => ajax( '/manage/category/update',{categoryId,categoryName},'post')
+
+export const reqProducts = (pageNum,pageSize) => ajax(`http://120.55.193.14:5000/manage/product/list?pageNum=${pageNum}&pageSize=${pageSize}`,'get')
