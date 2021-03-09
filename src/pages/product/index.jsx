@@ -3,7 +3,7 @@ import { Route, Switch, NavLink, Link, Redirect } from 'react-router-dom'
 import Home from './home'
 import Detail from './detail'
 import AddUpdate from './add-update'
-
+import './index.less'
 export default class Product extends Component {
     render() {
         return (

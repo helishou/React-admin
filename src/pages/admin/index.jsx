@@ -26,12 +26,18 @@ export default class Admin extends Component {
     return (
       <>
         <Layout style={{ height: "100%", width: "100%" }}>
-          <Sider >
+          <Sider style={{
+        overflow: 'auto',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+      }}>
+        {/* 设置固定侧边栏 */}
             <LeftNav />
           </Sider>
-          <Layout >
+          <Layout style={{ marginLeft: 200 }}>
             <Header>Header</Header>
-            <Content style={{ margin:20,backgroundColor: "white" }}>
+            <Content style={{ margin:20,backgroundColor: "white"}}>
               <Switch>
                 <Route path="/home" component={Home} />
                 <Route path="/category" component={Category} />
@@ -49,6 +55,7 @@ export default class Admin extends Component {
             </Footer>
           </Layout>
         </Layout>
+        
       </>
     );
   }
