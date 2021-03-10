@@ -4,6 +4,7 @@ import LinkButton from "../../component/link-button";
 import { RollbackOutlined } from "@ant-design/icons";
 import { options } from "less";
 import { reqCategorys, reqCategory } from "../../api";
+import PicturesWall from './pictures-wall'
 const Item = Form.Item;
 const TextArea = Input.TextArea;
 export default class AddUpdate extends Component {
@@ -13,6 +14,12 @@ export default class AddUpdate extends Component {
     cName1: "",
     cName2: "",
   };
+
+  constructor(props){
+      super(props)
+      //创造保存ref标识的标签对象的容器
+      this.pw = React.createRef()
+  }
   componentDidMount() {
     this.getCategorys("0");
   }
@@ -111,6 +118,8 @@ export default class AddUpdate extends Component {
     };
     const onFinish = (values: any) => {
       console.log("Success:", values);
+      const imgs=this.pw.current.getImgs()
+      console.log('imgs',imgs)
     };
     const tailLayout = {
       wrapperCol: { offset: 8, span: 16 },
@@ -194,6 +203,13 @@ export default class AddUpdate extends Component {
               changeOnSelect
             ></Cascader>
           </Item>
+          <Item
+            name="productImgs"
+            label="商品图片"
+            initialValue={name}
+            rules={[{ required: true, message: "必须输入商品名称!" }]}
+          >
+          <PicturesWall ref={this.pw} imgs/></Item>
           {/* 输入的是数值,指定type */}
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
@@ -205,3 +221,6 @@ export default class AddUpdate extends Component {
     );
   }
 }
+
+/* 子组件调用父组件的方法:将父组件的方法以函数属性的形式传递给子组件,子组件就可以调用
+父组件调用子组件的方法 :在父组件忠通过ref得到子组件标签对象(组件对象),调用其方法*/

@@ -56,3 +56,5 @@ export const reqProductsSearch = ( pageNum, pageSize , searchName,searchType) =>
   
   //添加商品
   export const reqAddProduct = (categoryId,pCategoryId,name,price,desc) => ajax('http://120.55.193.14:5000//manage/product/add',{categoryId,pCategoryId,name,price,desc},'post')
+  
+  export const reqDelImg = (name) => ajax('http://120.55.193.14:5000/manage/img/delete',{name},'post')
