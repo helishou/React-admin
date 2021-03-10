@@ -10,7 +10,9 @@ import {
 } from "../../api/index";
 import AddForm from "./addform";
 import UpdateForm from "./updateform";
-export default class Category extends Component {
+import { withRouter } from 'react-router-dom'
+
+class Category extends Component {
   state = {
     categorys: [],
     subCategorys: [], //二级分类列表
@@ -152,7 +154,7 @@ export default class Category extends Component {
   }
   render() {
     //card左侧
-
+    // console.log(this.props)
     //card右侧
     const extra = (
       <Button
@@ -247,3 +249,5 @@ export default class Category extends Component {
     );
   }
 }
+
+export default withRouter(Category)

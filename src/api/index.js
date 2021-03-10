@@ -53,3 +53,6 @@ export const reqProductsSearch = ( pageNum, pageSize , searchName,searchType) =>
   export const reqCategory = (categoryId) => ajax('http://120.55.193.14:5000/manage/category/info',{categoryId})
   /* 更新商品的状态(上/下) */
   export const reqUpdateStatus = (productId,status) => ajax('http://120.55.193.14:5000/manage/product/updateStatus',{productId,status},'post')
+  
+  //添加商品
+  export const reqAddProduct = (categoryId,pCategoryId,name,price,desc) => ajax('http://120.55.193.14:5000//manage/product/add',{categoryId,pCategoryId,name,price,desc},'post')

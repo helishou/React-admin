@@ -45,7 +45,7 @@ const { SubMenu } = Menu;
             <Link to={item.key}>{item.title}</Link>
           </Menu.Item>)
       }else{
-        const cItem=item.children.find(cItem => cItem.key===path)
+        const cItem=item.children.find(cItem => 0===path.indexOf(cItem.key))
         //如果存在，说明当前item的子列表需要打开
         if(cItem){
           this.openkey = item.key
@@ -72,8 +72,13 @@ const { SubMenu } = Menu;
     
   }
   render() {
+
     // console.log(this)
-    const path = this.props.location.pathname
+    let path = this.props.location.pathname
+    console.log(path)
+    if(path.indexOf('/product')===0){//当前请求的是商品或其子路由界面
+      path='/product'
+    }
     const openkey = this.openkey
     // this.setState({current:path})
     return (

@@ -86,11 +86,11 @@ export default class Home extends Component {
         title: "操作",
         dataIndex: "name,desc,price,detail,imgs",
         key: "action",
-        render: (name,desc,price,detail,imgs) => {
+        render: (name,desc,price,detail,imgs,categoryId,pCategoryId) => {
           return (
             <span>
               <LinkButton onClick={()=>this.props.history.push('/product/detail',{desc})}>详情</LinkButton>
-              <LinkButton>修改</LinkButton>
+              <LinkButton onClick={()=>this.props.history.push('/product/addupdate',{desc})}>修改</LinkButton>
             </span>
           );
         },
@@ -135,7 +135,7 @@ export default class Home extends Component {
         </Button>
       </span>
     );
-    const extra = <button>添加</button>;
+    const extra = <button onClick={()=>{this.props.history.push('/product/addupdate')}}>添加</button>;
 
     return (
       <Card title={title} extra={extra} className="product">

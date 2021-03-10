@@ -49,9 +49,13 @@ class Detail extends Component {
         商品详情
       </span>
     );
+    const itemLayout = {
+        labelCol:{span:6},
+        wrapperCol:{span:5}
+    }
     return (
       <Card title={title}>
-        <List>
+        <List {...itemLayout}  >
           <List.Item>
             <span className="left">商品名称:</span>
             <span style={{ marginLeft: 0 }}>{name}</span>
