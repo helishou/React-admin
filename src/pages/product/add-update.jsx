@@ -24,6 +24,7 @@ export default class AddUpdate extends Component {
     super(props);
     //创造保存ref标识的标签对象的容器
     this.pw = React.createRef();
+    this.editor = React.createRef();
   }
   componentDidMount() {
     this.getCategorys("0");
@@ -124,13 +125,15 @@ export default class AddUpdate extends Component {
       </span>
     );
     const formItemLayout = {
-      labelcol: { span: 3 }, //左侧label宽度
-      wrappercol: { span: 8 }, //右侧包裹输入框宽度
+      labelCol: { span: 3 }, //左侧label宽度
+      wrapperCol: { span: 8 }, //右侧包裹输入框宽度
     };
     const onFinish = (values) => {
       //   console.log("Success:", values);
       const imgs = this.pw.current.getImgs();
+      const detail = this.editor.current.getDetail();
       //   console.log('imgs',imgs)
+      console.log(detail)
     };
     const tailLayout = {
       wrapperCol: { offset: 8, span: 16 },
@@ -226,10 +229,11 @@ export default class AddUpdate extends Component {
           {/* 输入的是数值,指定type */}
           <Item
             name="productDetail"
-            label="商品描述"
-            // rules={[{ required: true, message: "必须输入商品名称!" }]}
+            label="商品详情"
+            labelCol={{ span: 3 }}
+            wrapperCol= {{ span: 20 }}
           >
-            <RichTextEditor />
+            <RichTextEditor ref={this.editor } detail={detail}/>
           </Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
