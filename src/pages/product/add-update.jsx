@@ -3,11 +3,16 @@ import { Card, Form, Input, Cascader, Upload, Button } from "antd";
 import LinkButton from "../../component/link-button";
 import { RollbackOutlined } from "@ant-design/icons";
 import { options } from "less";
-import { reqCategorys, reqCategory } from "../../api";
-import PicturesWall from './pictures-wall'
+import { reqCategorys } from "../../api";
+import PicturesWall from "./pictures-wall";
+import PropTypes from "prop-types";
+import RichTextEditor from "./rich-text-editor";
 const Item = Form.Item;
 const TextArea = Input.TextArea;
 export default class AddUpdate extends Component {
+  static propTypes = {
+    imgs: PropTypes.array,
+  };
   state = {
     options: [],
     setOptions: () => {},
@@ -15,10 +20,10 @@ export default class AddUpdate extends Component {
     cName2: "",
   };
 
-  constructor(props){
-      super(props)
-      //创造保存ref标识的标签对象的容器
-      this.pw = React.createRef()
+  constructor(props) {
+    super(props);
+    //创造保存ref标识的标签对象的容器
+    this.pw = React.createRef();
   }
   componentDidMount() {
     this.getCategorys("0");
@@ -38,7 +43,7 @@ export default class AddUpdate extends Component {
     }
   };
 
-  initOptions = async(categorys) => {
+  initOptions = async (categorys) => {
     const options = categorys.map((c) => ({
       //注意小括号
       value: c._id,
@@ -46,22 +51,28 @@ export default class AddUpdate extends Component {
       isLeaf: false,
     }));
     //如果是一个二级分类列表
-    const {isUpdate,product} = this
-    const {pCategoryId,categoryId} = product
-    if(isUpdate&&pCategoryId!=='0'){
-        //获取对应的二级分类列表
-        const subCategorys= await this.getCategorys(pCategoryId)
-        //生成二级下拉列表的options
-        const childOptions = subCategorys.map((c) => ({
-            //注意小括号,生成二级列表
-            value: c._id,
-            label: c.name,
-            isLeaf: true,
-          }))
-          //关联到对应的一级option
-          //找到对应的一级对象
-          const targetOption=options.find(option=>option.value===pCategoryId)
-          targetOption.children= childOptions
+    const { isUpdate, product } = this;
+    const { pCategoryId, categoryId } = product;
+    if (isUpdate && pCategoryId !== "0") {
+      //获取对应的二级分类列表
+      const subCategorys = await this.getCategorys(pCategoryId);
+      //生成二级下拉列表的options
+      const childOptions = subCategorys.map((c) => ({
+        //注意小括号,生成二级列表
+        value: c._id,
+        label: c.name,
+        isLeaf: true,
+      }));
+      //关联到对应的一级option
+      //找到对应的一级对象
+      //   debugger
+      const targetOption = options.find(
+        (option) => option.value === pCategoryId
+      );
+      if (targetOption) {
+        //如果找到
+        targetOption.children = childOptions;
+      }
     }
     // console.log(options)
     this.setState({ options });
@@ -113,18 +124,18 @@ export default class AddUpdate extends Component {
       </span>
     );
     const formItemLayout = {
-      labelCol: { span: 3 }, //左侧label宽度
-      wrapperCol: { span: 8 }, //右侧包裹输入框宽度
+      labelcol: { span: 3 }, //左侧label宽度
+      wrappercol: { span: 8 }, //右侧包裹输入框宽度
     };
-    const onFinish = (values: any) => {
-      console.log("Success:", values);
-      const imgs=this.pw.current.getImgs()
-      console.log('imgs',imgs)
+    const onFinish = (values) => {
+      //   console.log("Success:", values);
+      const imgs = this.pw.current.getImgs();
+      //   console.log('imgs',imgs)
     };
     const tailLayout = {
       wrapperCol: { offset: 8, span: 16 },
     };
-    const onFinishFailed = (errorInfo: any) => {
+    const onFinishFailed = (errorInfo) => {
       console.log("Failed:", errorInfo);
     };
 
@@ -142,7 +153,7 @@ export default class AddUpdate extends Component {
     } = this.product;
     const categoryIds = [];
     if (isUpdate) {
-      console.log("pCategoryId", pCategoryId);
+      //   console.log("pCategoryId", pCategoryId);
       if (pCategoryId !== "0") {
         categoryIds.push(pCategoryId);
       }
@@ -154,6 +165,7 @@ export default class AddUpdate extends Component {
         <Form
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          {...formItemLayout}
         >
           <Item
             name="productName"
@@ -209,8 +221,16 @@ export default class AddUpdate extends Component {
             initialValue={name}
             rules={[{ required: true, message: "必须输入商品名称!" }]}
           >
-          <PicturesWall ref={this.pw} imgs/></Item>
+            <PicturesWall ref={this.pw} imgs={imgs} />
+          </Item>
           {/* 输入的是数值,指定type */}
+          <Item
+            name="productDetail"
+            label="商品描述"
+            // rules={[{ required: true, message: "必须输入商品名称!" }]}
+          >
+            <RichTextEditor />
+          </Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
               Submit

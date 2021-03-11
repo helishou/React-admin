@@ -154,7 +154,6 @@ export default class Home extends Component {
           dataSource={this.state.products}
           columns={this.columns}
         />
-        ;
       </Card>
     );
   }

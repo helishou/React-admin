@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import {reqDelImg} from '../../api'
+
 /* 用于图片上传的组件 */
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -13,13 +14,35 @@ function getBase64(file) {
 }
 
 export default class PicturesWall extends React.Component {
-  state = {
-    previewVisible: false,//标识是否大图预览
-    previewImage: '',//大图的url
-    previewTitle: '',
-    fileList: [
-    ],
-  };
+//   state = {
+//     previewVisible: false,//标识是否大图预览
+//     previewImage: '',//大图的url
+//     previewTitle: '',
+//     fileList: [
+//     ],
+//   };
+  constructor (props){
+      super(props)
+      let fileList=[]
+      const {imgs}=this.props
+      console.log(imgs)
+    //   debugger
+      if(imgs&&imgs.length>0){
+          
+        fileList = imgs.map((img,index)=>({
+            uid: -index,
+            name: img.name,
+            status: 0,
+            url:img.url
+        }))
+      }
+      this.state={
+        previewVisible: false,//标识是否大图预览
+        previewImage: '',//大图的url
+        previewTitle: '',
+        fileList,//
+      }
+  }
 /* 获取所有已上传图片文件名的数组 */
 getImgs = () =>{
     return this.state.fileList.map(file => file.name)
@@ -46,6 +69,7 @@ getImgs = () =>{
           if(result.status===0){
               message.success('上传图片成功!')
               const {name,url}=result.data
+            //   debugger
               file = fileList[fileList.length-1]
               file.name=name
               file.url=url
@@ -73,8 +97,10 @@ getImgs = () =>{
         <div style={{ marginTop: 8 }}>Upload</div>
       </div>
     );
+    // debugger
     return (
       <>
+      
         <Upload
           action="/manage/img/upload"
           accept='image/*' //接受图片格式

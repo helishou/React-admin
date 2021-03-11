@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route, Switch, NavLink, Link, Redirect } from 'react-router-dom'
+import { Route, Switch,  Redirect } from 'react-router-dom'
 import Home from './home'
 import Detail from './detail'
 import AddUpdate from './add-update'
