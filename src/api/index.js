@@ -54,7 +54,9 @@ export const reqProductsSearch = ( pageNum, pageSize , searchName,searchType) =>
   /* 更新商品的状态(上/下) */
   export const reqUpdateStatus = (productId,status) => ajax('http://120.55.193.14:5000/manage/product/updateStatus',{productId,status},'post')
   
-  //添加商品
-  export const reqAddProduct = (categoryId,pCategoryId,name,price,desc) => ajax('http://120.55.193.14:5000//manage/product/add',{categoryId,pCategoryId,name,price,desc},'post')
+  //添加/修改商品  //多加一个/
+  export const reqAddProduct = (product) => ajax('http://120.55.193.14:5000/manage/product/'+(product._id?'update':'add'),product,'post')//这个本身是对象，所以不用加{}
   
+  //删除指定名称的图片
   export const reqDelImg = (name) => ajax('http://120.55.193.14:5000/manage/img/delete',{name},'post')
+  //更新商品

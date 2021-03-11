@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Card, Form, Input, Cascader, Upload, Button } from "antd";
+import { Card, Form, Input, Cascader, Upload, Button, message } from "antd";
 import LinkButton from "../../component/link-button";
 import { RollbackOutlined } from "@ant-design/icons";
 import { options } from "less";
-import { reqCategorys } from "../../api";
+import { reqCategorys,reqAddProduct } from "../../api";
 import PicturesWall from "./pictures-wall";
 import PropTypes from "prop-types";
 import RichTextEditor from "./rich-text-editor";
+
 const Item = Form.Item;
 const TextArea = Input.TextArea;
 export default class AddUpdate extends Component {
@@ -114,6 +115,27 @@ export default class AddUpdate extends Component {
     targetOption.loading = false;
     this.setState({ options: [...this.state.options] });
   };
+  onFinish = async (values) => {//调用接口请求函数去添加/更新
+    //   console.log("Success:", values);
+    const imgs = this.pw.current.getImgs();
+    const detail = this.editor.current.getDetail();
+    //   console.log('imgs',imgs)
+    const {name,desc,price,pCategoryId,categoryId} =values
+    const product = {name,desc,price,imgs,detail,pCategoryId,categoryId}
+    if(this.isUpdate){
+        product._id = this.product._id
+    }
+  console.log(product)
+    const result = await reqAddProduct(product)
+    console.log(result)
+    if(result.data.status===0){
+        message.success(`${this.isUpdate?'更新':'添加'}商品成功`)
+        this.props.history.goBack()
+    }else{
+      message.error(`${this.isUpdate?'更新':'添加'}商品失败`)
+    }
+
+  };
   render() {
     const { isUpdate } = this;
     const title = (
@@ -128,13 +150,7 @@ export default class AddUpdate extends Component {
       labelCol: { span: 3 }, //左侧label宽度
       wrapperCol: { span: 8 }, //右侧包裹输入框宽度
     };
-    const onFinish = (values) => {
-      //   console.log("Success:", values);
-      const imgs = this.pw.current.getImgs();
-      const detail = this.editor.current.getDetail();
-      //   console.log('imgs',imgs)
-      console.log(detail)
-    };
+    
     const tailLayout = {
       wrapperCol: { offset: 8, span: 16 },
     };
@@ -166,26 +182,26 @@ export default class AddUpdate extends Component {
     return (
       <Card title={title}>
         <Form
-          onFinish={onFinish}
+          onFinish={this.onFinish}
           onFinishFailed={onFinishFailed}
           {...formItemLayout}
         >
           <Item
-            name="productName"
+            name="name"
             label="商品名称"
             initialValue={name}
             rules={[{ required: true, message: "必须输入商品名称!" }]}
           >
             <Input placeholder="请输入商品名称"></Input>
           </Item>
-          <Item name="productDes" label="商品描述" initialValue={desc}>
+          <Item name="desc" label="商品描述" initialValue={desc}>
             <TextArea
               placeholder="请输入商品描述"
               autoSize={{ minRows: 2, maxRows: 6 }}
             ></TextArea>
           </Item>
           <Item
-            name="productPrice"
+            name="price"
             label="商品价格"
             initialValue={price}
             rules={[
@@ -205,7 +221,7 @@ export default class AddUpdate extends Component {
             ></Input>
           </Item>
           <Item
-            name="productClass"
+            name="categoryIds"
             label="商品类别"
             rules={[{ required: true, message: "必须选择商品类别!" }]}
             initialValue={categoryIds}
@@ -219,7 +235,7 @@ export default class AddUpdate extends Component {
             ></Cascader>
           </Item>
           <Item
-            name="productImgs"
+            name="imgs"
             label="商品图片"
             initialValue={name}
             rules={[{ required: true, message: "必须输入商品名称!" }]}
@@ -228,7 +244,7 @@ export default class AddUpdate extends Component {
           </Item>
           {/* 输入的是数值,指定type */}
           <Item
-            name="productDetail"
+            name="detail"
             label="商品详情"
             labelCol={{ span: 3 }}
             wrapperCol= {{ span: 20 }}

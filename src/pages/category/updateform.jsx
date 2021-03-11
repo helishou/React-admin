@@ -15,7 +15,7 @@ export default class UpdateForm extends Component {
         return (
             <Form >
                 <Item   name="username"   rules={[{ required: true, message: "名称必须输入!" }]}>
-                <Input     placeholder='请输入分类名称' defaultValue={category}  ref={input =>this.props.setForm(input)}></Input>
+                <Input     placeholder='请输入分类名称' initialValues={category}  ref={input =>this.props.setForm(input)}></Input>
                 </Item>
                 {/* <Item></Item><Input></Input>
                 <Input></Input> */}
