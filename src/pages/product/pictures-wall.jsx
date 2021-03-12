@@ -68,7 +68,7 @@ getImgs = () =>{
           const result=file.response
           if(result.status===0){
               message.success('上传图片成功!')
-              const {name,url}=result.data
+              const {name,url}=result
             //   debugger
               file = fileList[fileList.length-1]
               file.name=name
@@ -79,7 +79,7 @@ getImgs = () =>{
       }else if(file.status==='removed'){
         const result = await reqDelImg(file.name)
         console.log(result)
-        if(result.data.status===0){
+        if(result.status===0){
             message.success('删除成功') //防止服务器图片积累过多
         }else{
             message.error('删除失败')

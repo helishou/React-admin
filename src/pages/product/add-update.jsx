@@ -34,8 +34,8 @@ export default class AddUpdate extends Component {
   getCategorys = async (parentId) => {
     const result = await reqCategorys(parentId);
     // debugger
-    if (result.data.status === 0) {
-      const categorys = result.data.data;
+    if (result.status === 0) {
+      const categorys = result.data;
       if (parentId === "0") {
         this.initOptions(categorys);
       } else {
@@ -128,7 +128,7 @@ export default class AddUpdate extends Component {
   console.log(product)
     const result = await reqAddProduct(product)
     console.log(result)
-    if(result.data.status===0){
+    if(result.status===0){
         message.success(`${this.isUpdate?'更新':'添加'}商品成功`)
         this.props.history.goBack()
     }else{

@@ -15,8 +15,8 @@ class Detail extends Component {
       // 一级分类
       const result = await reqCategory(categoryId);
       console.log(result);
-      if (result.data.status === 0) {
-        const cName1 = result.data.data.name;
+      if (result.status === 0) {
+        const cName1 = result.name;
         this.setState({ cName1 });
       } else {
         Message.error("请求分类失败");
@@ -29,9 +29,9 @@ class Detail extends Component {
       const result2 = await reqCategory(pCategoryId); */
     //   一次发动多个请求
     const results = await Promise.all([reqCategory(categoryId),reqCategory(pCategoryId)])
-      if ((results[0].data.status === 0) & (results[1].data.status === 0)) {
-        const cName1 = results[0].data.data.name;
-        const cName2 = results[1].data.data.name;
+      if ((results[0].status === 0) & (results[1].status === 0)) {
+        const cName1 = results[0].name;
+        const cName2 = results[1].name;
         this.setState({ cName1, cName2 });
       } else {
         Message.error("请求分类失败");
