@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Card, Button, Table } from "antd";
+import { Card, Button, Table ,Modal} from "antd";
 import { PAGE_SIZE } from "../../utils/constant";
 import {reqRoleList} from '../../api'
+import AddForm from './add-form.jsx'
 /* 角色路由 */
 export default class Role extends Component {
   state = {
@@ -9,7 +10,7 @@ export default class Role extends Component {
     roles: [
     ],
     role:{},
-
+    showStatus:0,
   };
   getRoles = async() =>{
       const result= await reqRoleList()
@@ -40,6 +41,14 @@ export default class Role extends Component {
       },
     ];
   };
+  handleCancel = () => {
+    this.setState({ showStatus: 0 });
+  };
+  addRole = () => {
+    console.log(this.input.props.value)
+    this.setState({ showStatus: 0 });
+  };
+  
   componentDidMount(){
     this.getRoles()
   }
@@ -47,18 +56,18 @@ export default class Role extends Component {
     this.initColumn()
   }
   render() {
-    const { roles,role } = this.state;
+    const { roles,role,showStatus } = this.state;
     const title = (
       <span>
-        <Button type="primary">创建角色</Button>
-        <Button type="primary" disabled={role._id?true:false}>
+        <Button type="primary" onClick={()=>this.setState({showStatus:1})}>创建角色</Button>
+        <Button type="primary" disabled={!role._id}>
           设置角色权限
         </Button>
       </span>
     );
     
     // console.log(roles)
-    console.log(this.columns)
+    // console.log(this.columns)
     return (
         
       <Card title={title}>
@@ -87,7 +96,25 @@ export default class Role extends Component {
         }
         bordered
         />
+        <Modal
+          title="添加角色"
+          visible={showStatus === 1}
+          onOk={this.addRole}
+          onCancel={this.handleCancel}
+          destroyOnClose={true}
+
+        >
+          <AddForm
+          
+            
+            categoryName
+            setInput={(input) => {
+              this.input = input;
+            }}
+          />
+        </Modal>
       </Card>
+      
     );
   }
 }
