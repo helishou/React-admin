@@ -22,7 +22,7 @@ export default class Login extends Component {
       //   console.log('失败了',error.message)}
       // );
       console.log("请求成功", response);
-      const result = response.data; //{state:0,data:user} {state:1,msg:'xxxx'}
+      const result = response; //{state:0,data:user} {state:1,msg:'xxxx'}
       if (result.status === 0) {
         //登陆成功
         message.success("登录成功");

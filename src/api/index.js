@@ -59,4 +59,5 @@ export const reqProductsSearch = ( pageNum, pageSize , searchName,searchType) =>
   
   //删除指定名称的图片
   export const reqDelImg = (name) => ajax('http://120.55.193.14:5000/manage/img/delete',{name},'post')
-  //更新商品
+  //获取所有角色列表
+  export const reqRoleList = () => ajax('http://120.55.193.14:5000/manage/role/list')

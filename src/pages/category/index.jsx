@@ -28,9 +28,9 @@ class Category extends Component {
     const { parentId } = this.state;
     const result = await reqCategorys(parentId);
     this.setState({ loading: false });
-    if (result.data.status === 0) {
+    if (result.status === 0) {
       //去除分类数组
-      const categorys = result.data.data;
+      const categorys = result.data;
       if (parentId === "0") {
         this.setState({ categorys });
       } else {
@@ -70,7 +70,7 @@ class Category extends Component {
     //  console.log(categoryName)
     const result = await reqAddCategory(categoryName, parentId);
     // console.log(result);
-    if (result.status === 200) {
+    if (result.status === 0) {
       //重新显示列表
       // console.log('parentid',parentId)
       if(!parentId){

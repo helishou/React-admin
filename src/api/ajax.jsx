@@ -22,7 +22,7 @@ export default function ajax(url,data={},type="GET") {
         }
         //2.如果成功,调用resolve
         promise.then(response=>{
-            resolve(response)
+            resolve(response.data)
                     //3.如果失败,调用reject 
         }).catch(error=>{
             //reject(error)

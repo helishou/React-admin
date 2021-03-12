@@ -22,7 +22,7 @@ export default class Home extends Component {
     const { searchType, searchName } = this.state;
     this.setState({ loading: true });
     let result;
-    console.log(searchType)
+    // console.log(searchType)
     /* 实现一个函数实现两种请求 */
     if (searchName !=='') {
       result = await reqProductsSearch(
@@ -34,12 +34,12 @@ export default class Home extends Component {
     } else {
       result = await reqProducts(pageNum, PAGE_SIZE);
     }
-    // console.log(result);
+    console.log(result);
     this.setState({ loading: false });
-    if (result.status === 200) {
+    if (result.status === 0) {
       this.setState({
-        products: result.data.data.list,
-        total: result.data.data.total,
+        products: result.data.list,
+        total: result.data.total,
       });
     } else {
       Message.error("请求失败，请稍后重试");
@@ -100,7 +100,7 @@ export default class Home extends Component {
    updateStatus = async (productId,status)=>{
     const result = await reqUpdateStatus(productId,status);
     // console.log(result)
-    if(result.data.status===0){
+    if(result.status===0){
         message.success('更新商品成功')
         this.getProducts(this.pageNum)
     }else{
