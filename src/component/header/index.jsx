@@ -55,17 +55,13 @@ class Header extends Component {
     const path = this.props.location.pathname;
     let title;
     menuList.forEach((item) => {
-      // console.log('key',item.key)
-      // console.log('path',path)
       if (item.key === path) {
         // console.log(item);
         title = item.title;
       } else if (item.children) {
-
-        const cItem = item.children.find((cItem) => path.indexOf(cItem.key));
+        const cItem = item.children.find((cItem) => path.indexOf(cItem.key)===0);
         if (cItem) {
-          // 取出他的title
-          // console.log(cItem);
+//去除titke
           title = cItem.title;
         }
       }
@@ -77,6 +73,7 @@ class Header extends Component {
   componentDidMount() {
     this.getTime();
     this.getWeather();
+    
   }
   componentWillUnmount(){
     clearInterval(this.a)
@@ -85,7 +82,7 @@ class Header extends Component {
     const { currentTime, weather } = this.state;
     const user = memoryUtils.user.username;
     //显示当前的title
-    const title = this.getTitle();
+    const title=this.getTitle();
     // console.log('title',title)
     return (
       <div className="header">

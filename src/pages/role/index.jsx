@@ -1,26 +1,33 @@
-import React, { Component } from "react";
-import { Card, Button, Table ,Modal, message} from "antd";
+import React, { Component, } from "react";
+import { Card, Button, Table, Modal, message } from "antd";
 import { PAGE_SIZE } from "../../utils/constant";
-import {reqRoleList,reqAddRole} from '../../api'
-import AddForm from './add-form.jsx'
+import { reqRoleList, reqAddRole ,reqUpdateRole} from "../../api";
+import AddForm from "./add-form.jsx";
+import SetTree from "./setTree";
+import { get } from "store";
+import memoryUtils from '../../utils/memoryUtils'
+import {formateDate} from '../../utils/dataUtils'
 /* 角色路由 */
 export default class Role extends Component {
   state = {
-    loading:false,
-    roles: [
-    ],
-    role:{},
-    showStatus:0,
+    loading: false,
+    roles: [],
+    role: {},
+    showStatus: 0,
   };
-  getRoles = async() =>{
-      const result= await reqRoleList()
-        if(result.status===0){
-            const roles= result.data
-            this.setState({
-                roles
-            })
-        }
-  } 
+  constructor(props){
+      super(props)
+      this.auth= React.createRef()
+  }
+  getRoles = async () => {
+    const result = await reqRoleList();
+    if (result.status === 0) {
+      const roles = result.data;
+      this.setState({
+        roles,
+      });
+    }
+  };
   initColumn = () => {
     this.columns = [
       {
@@ -30,10 +37,12 @@ export default class Role extends Component {
       {
         title: "创建时间",
         dataIndex: "create_time",
+        render:(create_time)=>formateDate(create_time)
       },
       {
         title: "授权时间",
         dataIndex: "auth_time",
+        render:(auth_time)=>formateDate(auth_time)
       },
       {
         title: "授权人",
@@ -44,48 +53,69 @@ export default class Role extends Component {
   handleCancel = () => {
     this.setState({ showStatus: 0 });
   };
-  addRole = async() => {
-    console.log(this.input.props.value)
-    const result =await reqAddRole(this.input.props.value)
-    console.log(result)
-    if(result.status===0){
-      message.success('添加角色成功')
+  addRole = async () => {
+    const result = await reqAddRole(this.input.props.value);
+    if (result.status === 0) {
+      message.success("添加角色成功");
       // this.getRoles()
       // 可以不请求直接添加到roles列表
-      const role = result.data
+      const role = result.data;
       // const roles =[...this.state.roles]
       // roles.push(role)
       // this.setState({roles:roles})
-      this.setState(state=>({
-        roles:[...state.roles,role]
-      }))
-    }else{
-      message.error('添加角色失败')
+      this.setState((state) => ({
+        roles: [...state.roles, role],
+      }));
+    } else {
+      message.error("添加角色失败");
     }
     this.setState({ showStatus: 0 });
   };
-  
-  componentDidMount(){
-    this.getRoles()
+  setRole = async() => {
+    //   console.log('select',select)
+     const menus =  this.auth.current.getMenus()
+     const role = this.state.role
+     role.menus=menus
+     role.auth_time = Date.now()
+     role.auth_name = memoryUtils.user.username
+    //  console.log(role)
+     const result = await reqUpdateRole(role)
+     if(result.status===0){
+         message.success('设置权限成功')
+        //  this.setState((state) => ({
+        //     roles: [...state.roles, role],
+        //   }));
+     }else{
+         message.error('设置权限失败')
+     }
+    this.setState({ showStatus: 0 });
+  };
+  componentDidMount() {
+    this.getRoles();
   }
-  UNSAFE_componentWillMount(){
-    this.initColumn()
+  UNSAFE_componentWillMount() {
+    this.initColumn();
   }
   render() {
-    const { roles,role,showStatus } = this.state;
+    const { roles, role, showStatus } = this.state;
     const title = (
       <span>
-        <Button type="primary" onClick={()=>this.setState({showStatus:1})}>创建角色</Button>
-        <Button type="primary" onClick={()=>this.setState({showStatus:2})} disabled={!role._id}>
+        <Button type="primary" onClick={() => this.setState({ showStatus: 1 })}>
+          创建角色
+        </Button>
+        <Button
+          type="primary"
+          onClick={() => this.setState({ showStatus: 2 })}
+          disabled={!role._id}
+        >
           设置角色权限
         </Button>
       </span>
     );
-    
+
     // console.log(roles)
     // console.log(this.columns)
     return (
-        
       <Card title={title}>
         <Table
           rowKey="_id"
@@ -96,21 +126,19 @@ export default class Role extends Component {
           dataSource={roles}
           columns={this.columns}
           loading={this.state.loading}
-          rowSelection={{ type: "radio" ,selectedRowKeys:[role._id]}}//设置单选
-          onRow={role => {
+          rowSelection={{ type: "radio", selectedRowKeys: [role._id] }} //设置单选
+          onRow={(role) => {
             return {
-              onClick: event => {
-                  console.log(role)
-                  this.setState({role})
-                }, // 点击行
-              onDoubleClick: event => {},
-              onContextMenu: event => {},
-              onMouseEnter: event => {}, // 鼠标移入行
-              onMouseLeave: event => {},
+              onClick: (event) => {
+                this.setState({ role });
+              }, // 点击行
+              onDoubleClick: (event) => {},
+              onContextMenu: (event) => {},
+              onMouseEnter: (event) => {}, // 鼠标移入行
+              onMouseLeave: (event) => {},
             };
-          }
-        }
-        bordered
+          }}
+          bordered
         />
         <Modal
           title="添加角色"
@@ -118,11 +146,8 @@ export default class Role extends Component {
           onOk={this.addRole}
           onCancel={this.handleCancel}
           destroyOnClose={true}
-
         >
           <AddForm
-          
-            
             categoryName
             setInput={(input) => {
               this.input = input;
@@ -130,24 +155,15 @@ export default class Role extends Component {
           />
         </Modal>
         <Modal
-          title="添加角色"
+          title="设置角色权限"
           visible={showStatus === 2}
-          onOk={this.addRole}
+          onOk={this.setRole}
           onCancel={this.handleCancel}
           destroyOnClose={true}
-
         >
-          <AddForm
-          
-            
-            categoryName
-            setInput={(input) => {
-              this.input = input;
-            }}
-          />
+          <SetTree role={role} ref={this.auth}/>
         </Modal>
       </Card>
-      
     );
   }
 }

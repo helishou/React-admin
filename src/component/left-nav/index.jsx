@@ -61,7 +61,7 @@ const { SubMenu } = Menu;
     },[])
   }
   handleClick = (e) => {
-    console.log("click ", e);
+    // console.log("click ", e);
     this.setState({
       current: e.key,
     });
@@ -75,7 +75,7 @@ const { SubMenu } = Menu;
 
     // console.log(this)
     let path = this.props.location.pathname
-    console.log(path)
+    // console.log(path)
     if(path.indexOf('/product')===0){//当前请求的是商品或其子路由界面
       path='/product'
     }

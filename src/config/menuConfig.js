@@ -26,7 +26,7 @@ const menuList = [
   },
   {
     title: "用户管理",
-    key: "/users",
+    key: "/user",
     icon: <UserOutlined />,
   },
   {
