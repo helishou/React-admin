@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Card, Button, Table ,Modal} from "antd";
+import { Card, Button, Table ,Modal, message} from "antd";
 import { PAGE_SIZE } from "../../utils/constant";
-import {reqRoleList} from '../../api'
+import {reqRoleList,reqAddRole} from '../../api'
 import AddForm from './add-form.jsx'
 /* 角色路由 */
 export default class Role extends Component {
@@ -44,8 +44,24 @@ export default class Role extends Component {
   handleCancel = () => {
     this.setState({ showStatus: 0 });
   };
-  addRole = () => {
+  addRole = async() => {
     console.log(this.input.props.value)
+    const result =await reqAddRole(this.input.props.value)
+    console.log(result)
+    if(result.status===0){
+      message.success('添加角色成功')
+      // this.getRoles()
+      // 可以不请求直接添加到roles列表
+      const role = result.data
+      // const roles =[...this.state.roles]
+      // roles.push(role)
+      // this.setState({roles:roles})
+      this.setState(state=>({
+        roles:[...state.roles,role]
+      }))
+    }else{
+      message.error('添加角色失败')
+    }
     this.setState({ showStatus: 0 });
   };
   

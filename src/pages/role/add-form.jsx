@@ -25,7 +25,7 @@ export default class AddForm extends Component {
         >
           <Input
          
-            initialValues="请输入角色名称"
+            initialvalues="请输入角色名称"
             ref={(input) =>{ 
                 this.props.setInput(input)
             }}

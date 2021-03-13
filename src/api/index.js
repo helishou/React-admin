@@ -61,3 +61,5 @@ export const reqProductsSearch = ( pageNum, pageSize , searchName,searchType) =>
   export const reqDelImg = (name) => ajax('http://120.55.193.14:5000/manage/img/delete',{name},'post')
   //获取所有角色列表
   export const reqRoleList = () => ajax('http://120.55.193.14:5000/manage/role/list')
+  //添加角色   //参数加{}要求名字对应 不加要求顺序对应
+  export const reqAddRole = (roleName) => ajax('http://120.55.193.14:5000/manage/role/add',{roleName},'post')
