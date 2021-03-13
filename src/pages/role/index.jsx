@@ -76,7 +76,7 @@ export default class Role extends Component {
     const title = (
       <span>
         <Button type="primary" onClick={()=>this.setState({showStatus:1})}>创建角色</Button>
-        <Button type="primary" disabled={!role._id}>
+        <Button type="primary" onClick={()=>this.setState({showStatus:2})} disabled={!role._id}>
           设置角色权限
         </Button>
       </span>
@@ -115,6 +115,23 @@ export default class Role extends Component {
         <Modal
           title="添加角色"
           visible={showStatus === 1}
+          onOk={this.addRole}
+          onCancel={this.handleCancel}
+          destroyOnClose={true}
+
+        >
+          <AddForm
+          
+            
+            categoryName
+            setInput={(input) => {
+              this.input = input;
+            }}
+          />
+        </Modal>
+        <Modal
+          title="添加角色"
+          visible={showStatus === 2}
           onOk={this.addRole}
           onCancel={this.handleCancel}
           destroyOnClose={true}
