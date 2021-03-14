@@ -65,3 +65,5 @@ export const reqProductsSearch = ( pageNum, pageSize , searchName,searchType) =>
   export const reqAddRole = (roleName) => ajax('http://120.55.193.14:5000/manage/role/add',{roleName},'post')
 //更新权限
   export const reqUpdateRole = (role) => ajax('http://120.55.193.14:5000/manage/role/update',role,'post')
+  //获取用户列表所有
+  export const reqUsers = () => ajax('http://120.55.193.14:5000/manage/user/list')
