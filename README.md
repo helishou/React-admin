@@ -59,7 +59,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ### 服务器地址用的评论区的
 
 地址为：http://120.55.193.14:5000
-
-### 天气接口换成了高德api，教程百度的挂了
+天气接口换成了高德api，教程百度的挂了
 
 ### 其他总结
