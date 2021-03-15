@@ -3,6 +3,7 @@
 */
 import store from 'store'//兼容性强,代码简洁
 const USER_KEY = 'user_key'
+ //eslint-disable-next-line
 export default{
     /*
     保存user

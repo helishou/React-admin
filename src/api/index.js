@@ -10,8 +10,8 @@ import jsonp from "jsonp";
 
 export const reqLogin = (username, password) =>
   ajax("/login", { username, password }, "POST");
-
-export const reqAddUser = (user) => ajax("/manage/user/add", user, "POST");
+//添加或更新用户
+export const reqAddOrUpdateUser = (user) => ajax("http://120.55.193.14:5000/manage/user/"+(user._id?'update':'add'), user, "POST");
 
 /* jsonp请求的接口请求函数 */
 export const reqWeather = (city) => {
@@ -67,3 +67,7 @@ export const reqProductsSearch = ( pageNum, pageSize , searchName,searchType) =>
   export const reqUpdateRole = (role) => ajax('http://120.55.193.14:5000/manage/role/update',role,'post')
   //获取用户列表所有
   export const reqUsers = () => ajax('http://120.55.193.14:5000/manage/user/list')
+  //删除指定用户
+  export const reqDelUser = (userId) => ajax('http://120.55.193.14:5000/manage/user/delete',{userId},'post')
+  //添加用户
+  // export const reqAddUser = (user) => ajax('http://120.55.193.14:5000/manage/user/add',{user},'post')

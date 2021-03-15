@@ -142,6 +142,7 @@ export default class Home extends Component {
         <Table
           loading={this.state.loading}
           pagination={{
+            current:this.pageNum,  //跳转
             total: this.state.total,
             defaultPageSize: PAGE_SIZE,
             showQuickJumper: true,

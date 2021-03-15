@@ -54,8 +54,8 @@ class Detail extends Component {
         wrapperCol:{span:5}
     }
     return (
-      <Card title={title}>
-        <List {...itemLayout}  >
+      <Card title={title} {...itemLayout}>
+        <List   >
           <List.Item>
             <span className="left">商品名称:</span>
             <span style={{ marginLeft: 0 }}>{name}</span>

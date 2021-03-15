@@ -10,7 +10,7 @@ import storageUtils from "../../utils/storageUtils";
 
 export default class Login extends Component {
   onFinish = async (values) => {
-    console.log("Received values of form: ", values);
+    //console.log("Received values of form: ", values);
     //
     // console.log('this----',this)
     const { username, password } = values;
@@ -30,25 +30,25 @@ export default class Login extends Component {
         const user = result.data;
         memoryUtils.user = user;
         storageUtils.saveUser(user);
-        // console.log(this);
+        // //console.log(this);
         this.props.history.push("/");
       } else {
         // 登录失败.提示错误信息
         message.error(result.msg);
       }
     } catch (error) {
-      console.log("请求出错", error);
+      //console.log("请求出错", error);
     }
   };
   onFinishFailed = (values, errorFields, outOfDate) => {
-    console.log("校验失败");
+    //console.log("校验失败");
     values.errorFields.map((x) => {
-      return console.log(x.errors);
+      return //console.log(x.errors);
     });
-    // console.log('value------',values)
+    // //console.log('value------',values)
   };
   validatePwd = (rule, value, callback) => {
-    // console.log(value)
+    // //console.log(value)
     if (!value) {
       callback("密码必须输入");
     } else if (value.length < 4) {

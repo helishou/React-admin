@@ -7,6 +7,7 @@ import SetTree from "./setTree";
 import { get } from "store";
 import memoryUtils from '../../utils/memoryUtils'
 import {formateDate} from '../../utils/dataUtils'
+import storageUtils from "../../utils/storageUtils";
 /* 角色路由 */
 export default class Role extends Component {
   state = {
@@ -82,9 +83,13 @@ export default class Role extends Component {
      const result = await reqUpdateRole(role)
      if(result.status===0){
          message.success('设置权限成功')
-        //  this.setState((state) => ({
-        //     roles: [...state.roles, role],
-        //   }));
+         //如果更新的是自己角色权限,强制退出
+        if(memoryUtils.user.username!=='admin'&&role._id===memoryUtils.user.role_id){
+          memoryUtils.user={}
+          storageUtils.deleteUser()
+          this.props.history.replace('./login')
+          message.info('权限已更改,请重新登录')
+        }
      }else{
          message.error('设置权限失败')
      }
@@ -126,9 +131,14 @@ export default class Role extends Component {
           dataSource={roles}
           columns={this.columns}
           loading={this.state.loading}
-          rowSelection={{ type: "radio", selectedRowKeys: [role._id] }} //设置单选
+          rowSelection={{ type: "radio", selectedRowKeys: [role._id],onSelect:(role)=>{
+            this.setState({role:role})} 
+          }} //设置单选
           onRow={(role) => {
             return {
+              onSelect:(event) => {
+                this.setState({ role });
+              },
               onClick: (event) => {
                 this.setState({ role });
               }, // 点击行
