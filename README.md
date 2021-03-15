@@ -1,10 +1,11 @@
-# Getting Started with Create React App
+# 尚硅谷React项目教程(react实战全栈谷粒后台)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+B站教程地址:(前100集)https://www.bilibili.com/video/BV1i4411N7Qc?p=100&t=0
+(后40集)https://www.bilibili.com/video/BV1tK4y1H76t?p=15
 
-## Available Scripts
+## 使用说明
 
-In the project directory, you can run:
+Master分支不包含redux管理状态
 
 ### `yarn start`
 
@@ -39,32 +40,26 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## 学习总结
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+教程已经比较久远了。遇到问题也不少
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Antdv3升级成v4
 
-### Code Splitting
+根据教程写的，form这块做的一头雾水。只能到官网查API写了，用自己的想法实现了对应的功能。写出来还是怪怪的。暂时就这样吧。主题色没改，整体还是蓝色。偷懒了。
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 主组件的文件名都是index.jsx
 
-### Analyzing the Bundle Size
+跟教程的按组件命名还是有些差别
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 添加了postman的接口json
 
-### Making a Progressive Web App
+翻了翻评论区,都没人提供.就自己手打搞了一个
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 服务器地址用的评论区的
 
-### Advanced Configuration
+地址为：http://120.55.193.14:5000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 天气接口换成了高德api，教程百度的挂了
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 其他总结
