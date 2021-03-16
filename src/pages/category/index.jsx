@@ -67,12 +67,10 @@ class Category extends Component {
       message.error('名称不能为空!')
       return
     }
-    //  console.log(categoryName)
     const result = await reqAddCategory(categoryName, parentId);
     // console.log(result);
     if (result.status === 0) {
       //重新显示列表
-      // console.log('parentid',parentId)
       if(!parentId){
         this.getCategorys();//重新获取当前分类列表
         message.success('添加成功')

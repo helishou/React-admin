@@ -29,12 +29,13 @@ export default class PicturesWall extends React.Component {
     //   debugger
       if(imgs&&imgs.length>0){
           
-        fileList = imgs.map((img,index)=>({
+        fileList = imgs.map((img,index)=>(
+          img?{
             uid: -index,
             name: img.name,
             status: 0,
             url:img.url
-        }))
+        }:{}))
       }
       this.state={
         previewVisible: false,//标识是否大图预览
@@ -78,7 +79,6 @@ getImgs = () =>{
           }
       }else if(file.status==='removed'){
         const result = await reqDelImg(file.name)
-        console.log(result)
         if(result.status===0){
             message.success('删除成功') //防止服务器图片积累过多
         }else{

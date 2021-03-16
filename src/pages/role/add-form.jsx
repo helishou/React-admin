@@ -19,7 +19,6 @@ export default class AddForm extends PureComponent {
       {/* <Form onValuesChange={this.onFinish}> */}
         <Item
         {...formItemLayout}
-          name="input"
           label="角色名称"
           name="username"
           rules={[{ required: true, message: "名称必须输入!" }]}

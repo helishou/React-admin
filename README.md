@@ -62,3 +62,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 天气接口换成了高德api，教程百度的挂了
 
 ### 其他总结
+1.实现页面跳转前return，防止内存泄漏
+2.initialvalue写在item上
+3.因为后台数据保存不规范，要检查item是否存在再渲染

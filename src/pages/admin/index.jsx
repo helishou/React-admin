@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Redirect, Switch, Route } from "react-router-dom";
 import { Layout } from "antd";
+import { connect } from 'react-redux'
 
-import memoryUtils from "../../utils/memoryUtils";
+// import memoryUtils from "../../utils/memoryUtils";
 import LeftNav from "../../component/left-nav";
 import Header from "../../component/header";
 import Home from "../home";
@@ -15,9 +16,9 @@ import Users from "../users";
 import Product from "../product";
 const { Footer, Sider, Content } = Layout;
 
-export default class Admin extends Component {
+ class Admin extends Component {
   render() {
-    const user = memoryUtils.user;
+    const user = this.props.user;
     // 如果内存中没有存储user ==>当前没登陆
     if (!user || !user._id) {
       //自动跳转到登陆
@@ -60,3 +61,6 @@ export default class Admin extends Component {
     );
   }
 }
+export default connect(
+  state =>({user:state.user}),{}
+)(Admin)

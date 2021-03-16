@@ -110,8 +110,7 @@ export default class Users extends Component {
     // //console.log(user);
   };
   showUpdate = (user) => {
-    this.state.user = user;
-    this.setState({ showStatus: 1 });
+    this.setState({ showStatus: 1,user:user });
   };
   UNSAFE_componentWillMount() {
     this.initColumns();

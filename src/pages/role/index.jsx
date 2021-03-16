@@ -1,15 +1,15 @@
 import React, { Component, } from "react";
+import { connect } from 'react-redux'
 import { Card, Button, Table, Modal, message } from "antd";
+
 import { PAGE_SIZE } from "../../utils/constant";
 import { reqRoleList, reqAddRole ,reqUpdateRole} from "../../api";
 import AddForm from "./add-form.jsx";
 import SetTree from "./setTree";
-import { get } from "store";
-import memoryUtils from '../../utils/memoryUtils'
 import {formateDate} from '../../utils/dataUtils'
-import storageUtils from "../../utils/storageUtils";
+import { logout } from "../../redux/actions";
 /* 角色路由 */
-export default class Role extends Component {
+ class Role extends Component {
   state = {
     loading: false,
     roles: [],
@@ -78,17 +78,17 @@ export default class Role extends Component {
      const role = this.state.role
      role.menus=menus
      role.auth_time = Date.now()
-     role.auth_name = memoryUtils.user.username
+     role.auth_name = this.props.user.username
     //  console.log(role)
      const result = await reqUpdateRole(role)
      if(result.status===0){
          message.success('设置权限成功')
          //如果更新的是自己角色权限,强制退出
-        if(memoryUtils.user.username!=='admin'&&role._id===memoryUtils.user.role_id){
-          memoryUtils.user={}
-          storageUtils.deleteUser()
-          this.props.history.replace('./login')
+        if(this.props.user.username!=='admin'&&role._id===this.props.user.role_id){
           message.info('权限已更改,请重新登录')
+          this.props.logout()
+          return 
+          // this.props.history.replace('./login')
         }
      }else{
          message.error('设置权限失败')
@@ -177,3 +177,4 @@ export default class Role extends Component {
     );
   }
 }
+export default connect(state=>({user:state.user}),{logout})(Role)

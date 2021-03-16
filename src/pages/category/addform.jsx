@@ -13,16 +13,17 @@ export default class AddForm extends Component {
     render() {
         const {categorys}= this.props
         return (
-            
             <Form onValuesChange={this.onFinish}>
-                <Item name='classer'>
-                <Select initialValues='0' ref={input =>this.props.setClasses(input)}>
-                    <Option value='0'>一级分类</Option>
-                   {categorys.map(c=><Option value={c._id}>{c.name}</Option>)}
+                <Item  initialValue='0'
+                 name='classer'>
+                <Select  ref={input =>this.props.setClasses(input)}>
+                    <Option key='0'>一级分类</Option>
+                   {categorys.map(c=><Option value={c._id} key={c._id}>{c.name}</Option>)}
                 </Select>
                 </Item>
-                <Item name='input' name="username"   rules={[{ required: true, message: "名称必须输入!" }]}>
-                <Input initialValues='请输入分类名称'  ref={input =>this.props.setInput(input)}></Input>
+                <Item  
+                 name="username"   rules={[{ required: true, message: "名称必须输入!" }]}>
+                <Input placeholder='请输入分类名称'  ref={input =>this.props.setInput(input)}></Input>
                 </Item>
                 {/* <Item></Item><Input></Input>
                 <Input></Input> */}

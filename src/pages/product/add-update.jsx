@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Card, Form, Input, Cascader, Upload, Button, message } from "antd";
+import { Card, Form, Input, Cascader, Button, message } from "antd";
 import LinkButton from "../../component/link-button";
 import { RollbackOutlined } from "@ant-design/icons";
-import { options } from "less";
 import { reqCategorys,reqAddProduct } from "../../api";
 import PicturesWall from "./pictures-wall";
 import PropTypes from "prop-types";
@@ -54,7 +53,7 @@ export default class AddUpdate extends Component {
     }));
     //如果是一个二级分类列表
     const { isUpdate, product } = this;
-    const { pCategoryId, categoryId } = product;
+    const { pCategoryId } = product;
     if (isUpdate && pCategoryId !== "0") {
       //获取对应的二级分类列表
       const subCategorys = await this.getCategorys(pCategoryId);
@@ -76,20 +75,22 @@ export default class AddUpdate extends Component {
         targetOption.children = childOptions;
       }
     }
-    // console.log(options)
     this.setState({ options });
-    // console.log(this.state.options)
   };
   //如何判断是修改还是更新
   UNSAFE_componentWillMount() {
-    console.log(this.props.location);
-    const product = this.props.location.state.desc;
-    //保存是否更新的表示
-    this.isUpdate = !!product;
-    this.product = product || {};
+    let product
+    try{
+       product=this.props.location.state.desc
+      }catch{
+        product={}
+      }
+      this.product=product
+      this.isUpdate=!!product
+
   }
   onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
+    // console.log(value, selectedOptions);
   };
   /* 用来加载下面数字组 */
   loadData = async (selectedOptions) => {
@@ -99,7 +100,6 @@ export default class AddUpdate extends Component {
     //   load options lazily
     //获取二级分类列表
     const subCategorys = await this.getCategorys(targetOption.value);
-    // console.log(subCategorys)
     if (subCategorys && subCategorys.length > 0) {
       const cOptions = subCategorys.map((c) => ({
         //注意小括号,生成二级列表
@@ -116,25 +116,22 @@ export default class AddUpdate extends Component {
     this.setState({ options: [...this.state.options] });
   };
   onFinish = async (values) => {//调用接口请求函数去添加/更新
-    //   console.log("Success:", values);
     const imgs = this.pw.current.getImgs();
     const detail = this.editor.current.getDetail();
-    //   console.log('imgs',imgs)
-    const {name,desc,price,pCategoryId,categoryId} =values
+    const {name,desc,price,categoryIds} =values
+    const pCategoryId =categoryIds[0]
+    const categoryId =categoryIds[1]
     const product = {name,desc,price,imgs,detail,pCategoryId,categoryId}
     if(this.isUpdate){
         product._id = this.product._id
     }
-  console.log(product)
     const result = await reqAddProduct(product)
-    console.log(result)
     if(result.status===0){
         message.success(`${this.isUpdate?'更新':'添加'}商品成功`)
         this.props.history.goBack()
     }else{
       message.error(`${this.isUpdate?'更新':'添加'}商品失败`)
     }
-
   };
   render() {
     const { isUpdate } = this;
@@ -180,11 +177,10 @@ export default class AddUpdate extends Component {
     categoryIds.push(categoryId);
 
     return (
-      <Card title={title}>
+      <Card title={title} {...formItemLayout}>
         <Form
           onFinish={this.onFinish}
           onFinishFailed={onFinishFailed}
-          {...formItemLayout}
         >
           <Item
             name="name"
@@ -238,7 +234,6 @@ export default class AddUpdate extends Component {
             name="imgs"
             label="商品图片"
             initialValue={name}
-            rules={[{ required: true, message: "必须输入商品名称!" }]}
           >
             <PicturesWall ref={this.pw} imgs={imgs} />
           </Item>

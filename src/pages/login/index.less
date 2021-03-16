@@ -31,5 +31,24 @@
       font-weight: bold;
       margin-bottom: 20px;
     }
+    .error-msg{
+      visibility: hidden;
+      align-items: center;
+      text-align: center;
+      height: 30px;
+      width: 100%;
+      top: 0;
+      left: 0;
+      font-size: 16px;
+      transition: all .3s;
+      transform:translateY(-30px);
+      // position: absolute;
+      // transform: translateY(-30px);
+      &.show{
+        background-color: red;
+        visibility: visible;
+        transform:translateY(0px);
+      }
+    }
   }
 }

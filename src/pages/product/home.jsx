@@ -4,7 +4,6 @@ import {} from "@ant-design/icons";
 import LinkButton from "../../component/link-button";
 import { reqProducts, reqProductsSearch,reqUpdateStatus } from "../../api/";
 import { PAGE_SIZE } from "../../utils/constant";
-import { set } from "store";
 /* 默认字路由 */
 const Option = Select.Option;
 export default class Home extends Component {
@@ -22,7 +21,6 @@ export default class Home extends Component {
     const { searchType, searchName } = this.state;
     this.setState({ loading: true });
     let result;
-    // console.log(searchType)
     /* 实现一个函数实现两种请求 */
     if (searchName !=='') {
       result = await reqProductsSearch(
@@ -34,7 +32,6 @@ export default class Home extends Component {
     } else {
       result = await reqProducts(pageNum, PAGE_SIZE);
     }
-    console.log(result);
     this.setState({ loading: false });
     if (result.status === 0) {
       this.setState({
@@ -112,7 +109,7 @@ export default class Home extends Component {
     this.getProducts(1);
   }
   render() {
-    const { searchType, searchName } = this.state;
+    const { searchType } = this.state;
     const title = (
       <span>
         <Select

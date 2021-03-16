@@ -14,7 +14,6 @@ class Detail extends Component {
     if (pCategoryId === "0") {
       // 一级分类
       const result = await reqCategory(categoryId);
-      console.log(result);
       if (result.status === 0) {
         const cName1 = result.name;
         this.setState({ cName1 });
@@ -41,8 +40,6 @@ class Detail extends Component {
   render() {
     //读取携带过来的state
     const { name, desc, price, detail, imgs } = this.props.location.state.desc;
-    // console.log(name,desc,price,detail,imgs)
-    // console.log(this.props)
     const title = (
       <span>
         <RollbackOutlined onClick={() => this.props.history.goBack()} />{" "}
@@ -54,8 +51,8 @@ class Detail extends Component {
         wrapperCol:{span:5}
     }
     return (
-      <Card title={title} {...itemLayout}>
-        <List   >
+      <Card title={title} >
+        <List   {...itemLayout}>
           <List.Item>
             <span className="left">商品名称:</span>
             <span style={{ marginLeft: 0 }}>{name}</span>
@@ -81,12 +78,13 @@ class Detail extends Component {
             <span className="left">商品图片:</span>
             <span>
               {imgs.map((img) => (
+                img?
                 <img
                   key={img.name}
                   className="product-img"
                   alt={img.name}
                   src={img.url}
-                ></img>
+                ></img>:''
               ))}
             </span>
           </List.Item>

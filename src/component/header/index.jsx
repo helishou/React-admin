@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-// import { PageHeader } from "antd";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Modal } from "antd";
+import { ExclamationCircleOutlined, CloudOutlined } from "@ant-design/icons";
+
 import "./index.less";
 import { reqWeather } from "../../api/index";
-import { CloudOutlined } from "@ant-design/icons";
 import { formateDate } from "../../utils/dataUtils";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
-import menuList from "../../config/menuConfig";
-// import { set } from "store";
-import { withRouter } from "react-router-dom";
-import { Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import LinkButton from '../link-button'
+import LinkButton from "../link-button";
+import { logout } from "../../redux/actions";
 const { confirm } = Modal;
 class Header extends Component {
   state = {
@@ -19,7 +16,7 @@ class Header extends Component {
     weather: "",
   };
   getTime = () => {
-    this.a=setInterval(() => {
+    this.a = setInterval(() => {
       this.setState({ currentTime: formateDate(Date.now()) });
     }, 1000);
   };
@@ -30,59 +27,38 @@ class Header extends Component {
     this.setState({ weather });
   };
   //退出登陆
-  logout=()=>{
+  logout = () => {
     //显示确认框
-    const {history} = this.props
     // console.log(history)
     confirm({
       icon: <ExclamationCircleOutlined />,
-      content: '确定退出登陆吗?',
-      
-      onOk() {
-        console.log(this);
+      content: "确定退出登陆吗?",
+
+      onOk: () => {
+        // console.log(this);
         // 删除数据
         // 跳转到login
-        storageUtils.deleteUser()
-        memoryUtils.user ={}
-        history.replace('/login')
+        this.props.logout();
       },
-      onCancel() {
-        console.log('取消');
+      onCancel: () => {
+        console.log("取消");
       },
     });
-  }
-  getTitle = () => {
-    const path = this.props.location.pathname;
-    let title;
-    menuList.forEach((item) => {
-      if (item.key === path) {
-        // console.log(item);
-        title = item.title;
-      } else if (item.children) {
-        const cItem = item.children.find((cItem) => path.indexOf(cItem.key)===0);
-        if (cItem) {
-//去除titke
-          title = cItem.title;
-        }
-      }
-    });
-    // console.log(title)
-    return title;
   };
+
   /* 第一次render后立即执行 */
   componentDidMount() {
     this.getTime();
     this.getWeather();
-    
   }
-  componentWillUnmount(){
-    clearInterval(this.a)
+  componentWillUnmount() {
+    clearInterval(this.a);
   }
   render() {
     const { currentTime, weather } = this.state;
-    const user = memoryUtils.user.username;
+    const user = this.props.user.username;
     //显示当前的title
-    const title=this.getTitle();
+    const title = this.props.headTitle;
     // console.log('title',title)
     return (
       <div className="header">
@@ -107,4 +83,7 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+export default connect(
+  (state) => ({ headTitle: state.headTitle, user: state.user }),
+  { logout }
+)(withRouter(Header));

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Tree, Input, Form } from "antd";
 import menuConfig from "../../config/menuConfig";
-import menuList from "../../config/menuConfig";
 import PropTypes from "prop-types";
 
 export default class SetTree extends Component {
