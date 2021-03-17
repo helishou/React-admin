@@ -1,7 +1,9 @@
 /* 用来根据老的state和指定的action生成并返回新的state函数 */
 
 import storageUtils from "../utils/storageUtils"
-import {combineReducers} from 'redux'
+// import {combineReducers} from 'redux'
+import {combineReducers} from './自写redux/index'
+
 import {SET_HEAD_TITLE,RECEIVE_USER,SHOW_ERROR_MSG,RESET_USER} from './action-type'
 /* 用来管理头部标题的reducer函数 */
 const initTitle='首页'

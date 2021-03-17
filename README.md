@@ -42,11 +42,16 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## 学习总结
 
-教程已经比较久远了。遇到问题也不少
+教程已经比较久远了。遇到问题也不少。首先明确一个问题
+### 为什么学习使用React
+在传统的页面开发模式中，需要多次的操作DOM来进行页面的更新，我们都知道对DOM的操作会造成极大的性能问题。而React的提出就是减少对DOM的操作来提升性能，也就是Virtual DOM。
 
 ### Antdv3升级成v4
 
 根据教程写的，form这块做的一头雾水。只能到官网查API写了，用自己的想法实现了对应的功能。写出来还是怪怪的。暂时就这样吧。主题色没改，整体还是蓝色。偷懒了。
+
+### 使用echarts绘图
+
 
 ### 主组件的文件名都是index.jsx
 
@@ -65,3 +70,19 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 1.实现页面跳转前return，防止内存泄漏
 2.initialvalue写在item上
 3.因为后台数据保存不规范，要检查item是否存在再渲染
+
+
+## Redux总结
+redux确实学的有点头疼.关键得理解他到底每一步存在的意义是啥.不然连这部操作的必要性都不知道,自然就记不清有多少步了.
+### 什么情况下需要使用 redux
+1) 总体原则: 能不用就不用, 如果不用比较吃力才考虑使用
+2) 某个组件的状态，需要共享
+3) 某个状态需要在任何地方都可以拿到
+4) 一个组件需要改变全局状态
+5) 一个组件需要改变另一个组件的状态
+### 分清react-redux和redux
+1) 一开始完全懵逼,store.dispatch和connect this.props 混用,傻傻分不清,学了源码才知道connect Provider是react-redux的东西
+2) 使用react-redux,你不必将 state 中的数据原封不动地传入组件，可以根据 state 中的数据，动态地输出组件需要的（最小）属性
+3) react 16.0后与教程源码有所出入,于是学的最新的
+### reducer为纯函数
+简单来说，一个函数的返回结果只依赖于它的参数，并且在执行过程里面没有副作用，我们就把这个函数叫做纯函数
