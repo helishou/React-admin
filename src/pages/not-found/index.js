@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { setHeadTitle } from "../../redux/actions";
-import "./not-found.less";
+import "./index.less";
 /*前台 404 页面
  */
 class NotFound extends Component {

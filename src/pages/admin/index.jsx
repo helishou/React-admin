@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect, Switch, Route } from "react-router-dom";
 import { Layout } from "antd";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 
 // import memoryUtils from "../../utils/memoryUtils";
 import LeftNav from "../../component/left-nav";
@@ -14,9 +14,10 @@ import Line from "../charts/line/index";
 import Pie from "../charts/pie/index";
 import Users from "../users";
 import Product from "../product";
+import NotFound from "../not-found/index";
 const { Footer, Sider, Content } = Layout;
 
- class Admin extends Component {
+class Admin extends Component {
   render() {
     const user = this.props.user;
     // 如果内存中没有存储user ==>当前没登陆
@@ -27,19 +28,22 @@ const { Footer, Sider, Content } = Layout;
     return (
       <>
         <Layout style={{ height: "100%", width: "100%" }}>
-          <Sider style={{
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
-        left: 0,
-      }}>
-        {/* 设置固定侧边栏 */}
+          <Sider
+            style={{
+              overflow: "auto",
+              height: "100vh",
+              position: "fixed",
+              left: 0,
+            }}
+          >
+            {/* 设置固定侧边栏 */}
             <LeftNav />
           </Sider>
           <Layout style={{ marginLeft: 200 }}>
             <Header>Header</Header>
-            <Content style={{ margin:20,backgroundColor: "white"}}>
+            <Content style={{ margin: 20, backgroundColor: "white" }}>
               <Switch>
+                <Redirect exact={true} from="/" to="/home" />
                 <Route path="/home" component={Home} />
                 <Route path="/category" component={Category} />
                 <Route path="/product" component={Product} />
@@ -48,7 +52,7 @@ const { Footer, Sider, Content } = Layout;
                 <Route path="/charts/bar" component={Bar} />
                 <Route path="/charts/line" component={Line} />
                 <Route path="/charts/pie" component={Pie} />
-                <Redirect to="/home" />
+                <Route component={NotFound} />
               </Switch>
             </Content>
             <Footer style={{ textAlign: "center" }}>
@@ -56,11 +60,8 @@ const { Footer, Sider, Content } = Layout;
             </Footer>
           </Layout>
         </Layout>
-        
       </>
     );
   }
 }
-export default connect(
-  state =>({user:state.user}),{}
-)(Admin)
+export default connect((state) => ({ user: state.user }), {})(Admin);
