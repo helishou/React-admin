@@ -52,6 +52,9 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### 使用echarts绘图
 
+### 新的箭头函数用法
+为什么箭头函数返回值要用小括号包括起来？
+因为 大括号 是 函数主体 的标志。而箭头函数若要返回 自定义对象 的话，就必须用 小括号 把该对象括起来先。
 
 ### 主组件的文件名都是index.jsx
 

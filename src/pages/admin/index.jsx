@@ -15,6 +15,7 @@ import Pie from "../charts/pie/index";
 import Users from "../users";
 import Product from "../product";
 import NotFound from "../not-found/index";
+import Test from '../test'
 const { Footer, Sider, Content } = Layout;
 
 class Admin extends Component {
@@ -52,6 +53,7 @@ class Admin extends Component {
                 <Route path="/charts/bar" component={Bar} />
                 <Route path="/charts/line" component={Line} />
                 <Route path="/charts/pie" component={Pie} />
+                <Route path="/test" component={Test} />
                 <Route component={NotFound} />
               </Switch>
             </Content>
