@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { Menu } from "antd";
 
 import "./index.less";
-import logo from "../../assets/image/logo.png";
+import logo from "../../assets/image/head.jpg";
 import menuList from "../../config/menuConfig";
-import {setHeadTitle} from '../../redux/actions'
+import { setHeadTitle } from "../../redux/actions";
 /* 
 左侧导航的组件
  */
@@ -39,23 +39,25 @@ class LeftNav extends Component {
     });
   };
   //查看item是否有授权
-  hasAuth = (item) =>{
-    const key = item.key
-    const menus = this.props.user.role.menus
-    const username = this.props.user.username
+  hasAuth = (item) => {
+    const key = item.key;
+    // const menus = this.props.user.role.menus;
+    const menus = ["/home", "/user", "/products", "/role", "/charts"];
+    const username = this.props.user.username;
     // console.log(username)
     /*
     1.如果当前用户是admin,直接通过 
     2.如果当前item是公开的
     3.当前用户有此item的权限
      */
-    if(username==='admin'||key==='./home'||menus.indexOf(key)!==-1){
-      return true
-    }else if(item.children){//有一个子item的权限,
-      return !!item.children.find(child =>menus.indexOf(child.key)!==-1)
+    if (username === "admin" || key === "./home" || menus.indexOf(key) !== -1) {
+      return true;
+    } else if (item.children) {
+      //有一个子item的权限,
+      return !!item.children.find((child) => menus.indexOf(child.key) !== -1);
     }
-    return false
-  }
+    return false;
+  };
   //改用reduce调用
   getMenuNodes = (menuList) => {
     const path = this.props.location.pathname;
@@ -65,13 +67,18 @@ class LeftNav extends Component {
         //像pre中添加《item》或者《submenu》
         if (!item.children) {
           // 判断item是否是当前对应item
-          if(item.key===path||path.indexOf(item.key)===0){
+          if (item.key === path || path.indexOf(item.key) === 0) {
             //更新redux中的状态
-            this.props.setHeadTitle(item.title)
+            this.props.setHeadTitle(item.title);
           }
           pre.push(
             <Menu.Item key={item.key} icon={item.icon}>
-              <Link to={item.key} onClick={()=>this.props.setHeadTitle(item.title)}>{item.title}</Link>
+              <Link
+                to={item.key}
+                onClick={() => this.props.setHeadTitle(item.title)}
+              >
+                {item.title}
+              </Link>
             </Menu.Item>
           );
         } else {
@@ -117,7 +124,7 @@ class LeftNav extends Component {
       <div>
         <Link to="/" className="left-nav-header">
           <img src={logo} alt="logo" />
-          <h1>硅谷后台</h1>
+          <h1>河狸兽后台</h1>
         </Link>
 
         {/* <br />
@@ -136,10 +143,6 @@ class LeftNav extends Component {
     );
   }
 }
-export default connect(
-  state =>({user:state.user}),{setHeadTitle}
-)(
+export default connect((state) => ({ user: state.user }), { setHeadTitle })(
   withRouter(LeftNav)
-  );
-
-  
+);

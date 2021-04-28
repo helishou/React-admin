@@ -17,7 +17,6 @@ export default class Home extends Component {
           //   extra={
           //     <Icon style={{ color: "rgba(0,0,0,.45)" }} type="question-circle" />
           //   }
-          style={{ width: 250 }}
           headStyle={{ color: "rgba(0,0,0,.45)" }}
         >
           <Statistic
@@ -55,7 +54,7 @@ export default class Home extends Component {
           />
         </Card>
         <Card className='home-center'>
-            <span style={{margin:'180px',lineHeight:'250px',fontSize:'30px',fontWeight:'bold'} }>欢迎使用硅谷后台管理系统</span>
+            <span>欢迎使用河狸兽后台管理系统</span>
         </Card>
         <Card
           title="任务"

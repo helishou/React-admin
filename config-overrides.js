@@ -6,7 +6,7 @@ module.exports = override(
   fixBabelImports("import", {
     libraryName: "antd",
     libraryDirectory: "es",
-    style: "css",
+    style: true
   }),
   // fixBabelImports("import", {
   //   libraryName: "@ant-design",
@@ -14,8 +14,7 @@ module.exports = override(
   //   style: "js",
   // }),
   addLessLoader({
-    strictMath: true,
-    noIeCompat: true,
+    javascriptEnabled: true,
     modifyVars: {
       "@primary-color": "#1DA57A", // for example, you use Ant Design to change theme color.
     },
