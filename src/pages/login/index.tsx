@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import logo from "../../assets/image/head.jpg";
 import { Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
@@ -6,9 +6,20 @@ import { Redirect } from "react-router-dom";
 import "./index.less";
 import { connect } from "react-redux";
 import { login } from "../../redux/actions";
-
-class Login extends Component {
-  onFinish = async (values) => {
+interface userDetail {
+  username: String;
+  password: String;
+}
+interface User {
+  _id: string;
+  errorMsg: string;
+}
+type Props = {
+  login: Function;
+  user: User;
+};
+class Login extends PureComponent<Props> {
+  onFinish = async (values: userDetail) => {
     //console.log("Received values of form: ", values);
     //
     // console.log('this----',this)
@@ -20,14 +31,14 @@ class Login extends Component {
       console.log("请求出错", error);
     }
   };
-  onFinishFailed = (values, errorFields, outOfDate) => {
+  onFinishFailed: any = (values: any, errorFields: any, outOfDate: any) => {
     //console.log("校验失败");
-    values.errorFields.map((x) => {
+    values.errorFields.map((x: any) => {
       return console.log(x.errors);
     });
     // //console.log('value------',values)
   };
-  validatePwd = (rule, value) => {
+  validatePwd = (rule: any, value: string) => {
     // //console.log(value)
     if (!value) {
       return Promise.reject("密码必须输入");
@@ -148,4 +159,8 @@ class Login extends Component {
     );
   }
 }
-export default connect((state) => ({ user: state.user }), { login })(Login);
+
+export default connect<{ user: User }, {}, {}, { user: User }>(
+  (state) => ({ user: state.user }),
+  { login }
+)(Login);

@@ -15,10 +15,12 @@ import Pie from "../charts/pie/index";
 import Users from "../users";
 import Product from "../product";
 import NotFound from "../not-found/index";
-import Test from '../test'
+import Test from "../test";
 const { Footer, Sider, Content } = Layout;
-
-class Admin extends Component {
+type Props = {
+  user: any;
+};
+class Admin extends Component<Props> {
   render() {
     const user = this.props.user;
     // 如果内存中没有存储user ==>当前没登陆
@@ -66,4 +68,7 @@ class Admin extends Component {
     );
   }
 }
-export default connect((state) => ({ user: state.user }), {})(Admin);
+export default connect<{ user: any }, {}, {}, { user: any }>(
+  (state) => ({ user: state.user }),
+  {}
+)(Admin);

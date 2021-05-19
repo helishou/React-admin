@@ -5,7 +5,11 @@ import { setHeadTitle } from "../../redux/actions";
 import "./index.less";
 /*前台 404 页面
  */
-class NotFound extends Component {
+type Props = {
+  setHeadTitle: Function;
+  history: any;
+};
+class NotFound extends Component<Props> {
   goHome = () => {
     this.props.setHeadTitle("首页");
     this.props.history.replace("/home");

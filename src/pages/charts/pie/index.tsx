@@ -109,7 +109,7 @@ export default class Pie extends Component {
           },
           animationType: "scale",
           animationEasing: "elasticOut",
-          animationDelay: function (idx) {
+          animationDelay: function () {
             return Math.random() * 200;
           },
         },

@@ -1,4 +1,11 @@
+/*
+ * @Author: helishou
+ * @Date: 2021-05-19 21:51:36
+ * @Last Modified by: helishou
+ * @Last Modified time: 2021-05-19 22:34:53
+ */
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { Modal } from "antd";
 import { Space, Card, Table, Button, message } from "antd";
 import { PlusOutlined, ArrowRightOutlined } from "@ant-design/icons";
@@ -10,10 +17,31 @@ import {
 } from "../../api/index";
 import AddForm from "./addform";
 import UpdateForm from "./updateform";
-import { withRouter } from 'react-router-dom'
+import { CategoryModel, ICategory } from "./Model";
+interface ICategoryProps {}
+interface IState {
+  categorys: Array<ICategory>;
+  subCategorys: Array<any>;
+  loading: boolean;
+  parentId: string; //当前需要显示的分类ID
+  parentName: string; //当前需要显示的分类名称
+  showStatus: number; //0都不显示,1显示更新,2显示添加
+}
 
 class Category extends Component {
-  state = {
+  private classes: any = [];
+  private form: any = [];
+  private columns: any = [];
+  private input: any = '';
+  private category: ICategory = {
+    parentId: "",
+    _id: "",
+    name: "",
+    __v: 0,
+    categoryName: "",
+    parentName: "",
+  };
+  state: IState = {
     categorys: [],
     subCategorys: [], //二级分类列表
     loading: false,
@@ -22,7 +50,7 @@ class Category extends Component {
     showStatus: 0, //0都不显示,1显示更新,2显示添加
   };
   /*
-  /* 異物获取一级或者耳机分类列表显示 */
+  /* 异步获取一级或者耳机分类列表显示 */
   getCategorys = async () => {
     this.setState({ loading: true });
     const { parentId } = this.state;
@@ -42,7 +70,7 @@ class Category extends Component {
     }
   };
   /* 展现指定对象的子列表 */
-  showSubCategory = (category) => {
+  showSubCategory = (category: ICategory) => {
     //更新状态时异步的
     this.setState(
       {
@@ -63,20 +91,21 @@ class Category extends Component {
     const parentId = this.classes.props.value;
     // console.log(categoryId)
     const categoryName = this.input.props.value;
-    if(!categoryName){
-      message.error('名称不能为空!')
-      return
+    if (!categoryName) {
+      message.error("名称不能为空!");
+      return;
     }
     const result = await reqAddCategory(categoryName, parentId);
-    // console.log(result);
+    console.log(result);
     if (result.status === 0) {
-      //重新显示列表
-      if(!parentId){
-        this.getCategorys();//重新获取当前分类列表
-        message.success('添加成功')
+      console.log(typeof parentId);
+      message.success("添加成功");
+      //如果位于最外层,重新显示列表
+      if (parentId==='0') {
+        this.getCategorys(); //重新获取当前分类列表
       }
-    }else{
-      message.error('添加失败')
+    } else {
+      message.error("添加失败");
     }
   };
   //修改后更新列表
@@ -87,19 +116,18 @@ class Category extends Component {
     const categoryId = this.category._id;
     // console.log(categoryId)
     const categoryName = this.form.state.value;
-    if(!categoryName){
-      message.error('名称不能为空!')
-      return
+    if (!categoryName) {
+      message.error("名称不能为空!");
+      return;
     }
     // console.log(categoryName);
     const result = await reqUpdateCategory(categoryId, categoryName);
-    // console.log(result)
-    if (result.status === 200) {
+    if (result.status === 0) {
       //重新显示列表
       this.getCategorys();
-      message.success('修改成功')
-    }else{
-      message.error('修改失败')
+      message.success("修改成功");
+    } else {
+      message.error("修改失败");
     }
   };
   /* 准备数据 */
@@ -117,7 +145,7 @@ class Category extends Component {
         width: 300,
         key: "action",
         dataIndex: "",
-        render: (category) => (
+        render: (category:ICategory) => (
           <span>
             <LinkButton
               onClick={() => {
@@ -165,13 +193,8 @@ class Category extends Component {
         添加
       </Button>
     );
-    const {
-      parentId,
-      categorys,
-      subCategorys,
-      parentName,
-      showStatus,
-    } = this.state;
+    const { parentId, categorys, subCategorys, parentName, showStatus } =
+      this.state;
 
     const category = this.category || {}; // 如果还没有,则空对象
     const title =
@@ -204,8 +227,9 @@ class Category extends Component {
       <Card title={title} extra={extra}>
         <Table
           rowKey="_id"
-          pagination={{ pageSize: 5
-            // , total: 50 
+          pagination={{
+            pageSize: 5,
+            // , total: 50
           }}
           dataSource={parentId === "0" ? categorys : subCategorys}
           columns={this.columns}
@@ -220,11 +244,11 @@ class Category extends Component {
         >
           <AddForm
             categorys={categorys}
-            categoryName
-            setClasses={(classes) => {
+            // categoryName={categoryName}
+            setClasses={(classes: any) => {
               this.classes = classes;
             }}
-            setInput={(input) => {
+            setInput={(input:string) => {
               this.input = input;
             }}
           />
@@ -238,7 +262,7 @@ class Category extends Component {
         >
           <UpdateForm
             category={category.name}
-            setForm={(form) => {
+            setForm={(form:any) => {
               this.form = form;
             }}
           />
@@ -248,4 +272,4 @@ class Category extends Component {
   }
 }
 
-export default withRouter(Category)
+export default Category;
