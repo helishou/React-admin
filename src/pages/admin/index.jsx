@@ -4,7 +4,7 @@ import { Layout } from "antd";
 import { connect } from "react-redux";
 
 // import memoryUtils from "../../utils/memoryUtils";
-import LeftNav from "../../component/left-nav";
+import LeftNav from "../../component/left-nav/index.jsx";
 import Header from "../../component/header";
 import Home from "../home";
 import Category from "../category";
