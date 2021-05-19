@@ -41,8 +41,9 @@ class LeftNav extends Component {
   //查看item是否有授权
   hasAuth = (item) => {
     const key = item.key;
-    // const menus = this.props.user.role.menus;
-    const menus = ["/home", "/user", "/products", "/role", "/charts"];
+    const menus = this.props.user.role.menus;
+    // 站视全部
+    // const menus = ["/home", "/user", "/products", "/role", "/charts"];
     const username = this.props.user.username;
     // console.log(username)
     /*

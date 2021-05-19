@@ -1,4 +1,10 @@
 # 尚硅谷React项目教程(react实战全栈谷粒后台)
+## 项目描述
+1) 此项目为一个前后台分离的后台管理的 SPA, 包括前端 PC 应用和后端应用
+2) 包括用户管理 / 商品分类管理 / 商品管理 / 权限管理等功能模块
+3) 前端: 使用 React 全家桶 + Antd + Axios + ES6 + Webpack 等技术
+4) 后端: 使用 Node + Express + Mongodb 等技术
+5) 采用模块化、组件化、工程化的模式开发
 
 B站教程地址:(前100集)https://www.bilibili.com/video/BV1i4411N7Qc?p=100&t=0
 (后40集)https://www.bilibili.com/video/BV1tK4y1H76t?p=15
@@ -7,38 +13,6 @@ B站教程地址:(前100集)https://www.bilibili.com/video/BV1i4411N7Qc?p=100&t=
 
 Master分支不包含redux管理状态
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ## 学习总结
 

@@ -6,7 +6,6 @@ import {message} from 'antd'
 //在外层包一个promise对象
 //在请求出错时,补reject(error),自己提示问题
 export default function ajax(url,data={},type="GET") {
-    
     return new Promise((resolve,reject)=>{
         let promise
         //1.执行异步ajax请求

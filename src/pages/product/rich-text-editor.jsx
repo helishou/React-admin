@@ -20,7 +20,7 @@ export default class RichTextEditor extends Component {
       xhr.addEventListener("load", () => {
         const response = JSON.parse(xhr.responseText);
         let url = response.url; //图片地址
-        url = url.replace("localhost", "120.55.193.14"); //替换本地地址成服务器地址
+        // url = url.replace("localhost", "120.55.193.14"); //替换本地地址成服务器地址
         resolve({ data: { link: url } });
       });
       xhr.addEventListener("error", () => {
