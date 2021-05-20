@@ -1,8 +1,8 @@
 /*
  * @Author: helishou
  * @Date: 2021-05-19 21:56:32
- * @Last Modified by:   helishou
- * @Last Modified time: 2021-05-19 21:56:32
+ * @Last Modified by: helishou
+ * @Last Modified time: 2021-05-20 11:07:55
  */
 export interface ICategory {
   parentId: string;
@@ -15,7 +15,7 @@ export interface ICategory {
 
 export interface CategoryModel {
   parentId: string;
-  id: number;
+  _id: string;
   name: string;
   categoryName: string;
   parentName: string;

@@ -1,18 +1,52 @@
-import React, { Component } from "react";
+/*
+ * @Author: helishou
+ * @Date: 2021-05-20 10:44:37
+ * @Last Modified by: helishou
+ * @Last Modified time: 2021-05-20 14:50:17
+ */
+import React, { Component, RefObject } from "react";
 import { Card, Form, Input, Cascader, Button, message } from "antd";
 import LinkButton from "../../component/link-button";
 import { RollbackOutlined } from "@ant-design/icons";
-import { reqCategorys,reqAddProduct } from "../../api";
+import { reqCategorys, reqAddProduct } from "../../api";
 import PicturesWall from "./pictures-wall";
 import PropTypes from "prop-types";
 import RichTextEditor from "./rich-text-editor";
+import { ProductsModel } from "./Model";
+import { CategoryModel } from "../category/Model";
+import { RouteComponentProps, withRouter } from "react-router";
+interface Options {
+  value: string;
+  label: string;
+  isLeaf: boolean;
+  children?: Options[] | undefined;
+}
+interface ProductAddUpdateState {
+  options: Options[];
+}
+
+interface ProductAddUpdateProps {
+  location:any;
+  imgs:any[]
+}
+
+type ProductAddUpdateRouteProps = ProductAddUpdateProps & RouteComponentProps;
 
 const Item = Form.Item;
 const TextArea = Input.TextArea;
-export default class AddUpdate extends Component {
-  static propTypes = {
-    imgs: PropTypes.array,
-  };
+
+class AddUpdate extends Component<
+  ProductAddUpdateRouteProps,
+  ProductAddUpdateState
+> {
+  isUpdate: boolean = false;
+  pw: RefObject<PicturesWall>;
+  editor: RefObject<RichTextEditor>;
+  product: ProductsModel | undefined;
+  defaultCategory: string[] = [];
+  // static propTypes = {
+  //   imgs: PropTypes.array,
+  // };
   state = {
     options: [],
     setOptions: () => {},
@@ -20,7 +54,7 @@ export default class AddUpdate extends Component {
     cName2: "",
   };
 
-  constructor(props) {
+  constructor(props: ProductAddUpdateRouteProps) {
     super(props);
     //创造保存ref标识的标签对象的容器
     this.pw = React.createRef();
@@ -30,7 +64,7 @@ export default class AddUpdate extends Component {
     this.getCategorys("0");
   }
   /* async返回值是新的promise对象,promise结果和值由async的结果 */
-  getCategorys = async (parentId) => {
+  getCategorys = async (parentId: string) => {
     const result = await reqCategorys(parentId);
     // debugger
     if (result.status === 0) {
@@ -44,8 +78,15 @@ export default class AddUpdate extends Component {
     }
   };
 
-  initOptions = async (categorys) => {
-    const options = categorys.map((c) => ({
+  /**
+   * @name: initOptions
+   * @test: test font
+   * @msg: 初始化Cascader状态数据
+   * @param {*}
+   * @return {*}
+   */
+  initOptions = async (categorys: CategoryModel[]): Promise<any> => {
+    const options: Options[] = categorys.map((c) => ({
       //注意小括号
       value: c._id,
       label: c.name,
@@ -58,7 +99,7 @@ export default class AddUpdate extends Component {
       //获取对应的二级分类列表
       const subCategorys = await this.getCategorys(pCategoryId);
       //生成二级下拉列表的options
-      const childOptions = subCategorys.map((c) => ({
+      const childOptions = subCategorys.map((c: CategoryModel) => ({
         //注意小括号,生成二级列表
         value: c._id,
         label: c.name,
@@ -79,19 +120,18 @@ export default class AddUpdate extends Component {
   };
   //如何判断是修改还是更新
   UNSAFE_componentWillMount() {
-    let product
-    try{
-       product=this.props.location.state.desc
-      }catch{
-        product={}
-      }
-      this.product=product
-      this.isUpdate=!!product
-
+    let product;
+    try {
+      product = this.props.location.state.desc;
+    } catch {
+      product = {};
+    }
+    this.product = product;
+    this.isUpdate = !!product;
   }
-  onChange = (value, selectedOptions) => {
+  // onChange = (value, selectedOptions) => {
     // console.log(value, selectedOptions);
-  };
+  // };
   /* 用来加载下面数字组 */
   loadData = async (selectedOptions) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
@@ -115,22 +155,31 @@ export default class AddUpdate extends Component {
     targetOption.loading = false;
     this.setState({ options: [...this.state.options] });
   };
-  onFinish = async (values) => {//调用接口请求函数去添加/更新
+  onFinish = async (values) => {
+    //调用接口请求函数去添加/更新
     const imgs = this.pw.current.getImgs();
     const detail = this.editor.current.getDetail();
-    const {name,desc,price,categoryIds} =values
-    const pCategoryId =categoryIds[0]
-    const categoryId =categoryIds[1]
-    const product = {name,desc,price,imgs,detail,pCategoryId,categoryId}
-    if(this.isUpdate){
-        product._id = this.product._id
+    const { name, desc, price, categoryIds } = values;
+    const pCategoryId = categoryIds[0];
+    const categoryId = categoryIds[1];
+    const product = {
+      name,
+      desc,
+      price,
+      imgs,
+      detail,
+      pCategoryId,
+      categoryId,
+    };
+    if (this.isUpdate) {
+      product._id = this.product._id;
     }
-    const result = await reqAddProduct(product)
-    if(result.status===0){
-        message.success(`${this.isUpdate?'更新':'添加'}商品成功`)
-        this.props.history.goBack()
-    }else{
-      message.error(`${this.isUpdate?'更新':'添加'}商品失败`)
+    const result = await reqAddProduct(product);
+    if (result.status === 0) {
+      message.success(`${this.isUpdate ? "更新" : "添加"}商品成功`);
+      this.props.history.goBack();
+    } else {
+      message.error(`${this.isUpdate ? "更新" : "添加"}商品失败`);
     }
   };
   render() {
@@ -147,7 +196,7 @@ export default class AddUpdate extends Component {
       labelCol: { span: 3 }, //左侧label宽度
       wrapperCol: { span: 8 }, //右侧包裹输入框宽度
     };
-    
+
     const tailLayout = {
       wrapperCol: { offset: 8, span: 16 },
     };
@@ -158,15 +207,8 @@ export default class AddUpdate extends Component {
     // function onChange(value) {
     //   console.log(value);
     // }
-    const {
-      name,
-      desc,
-      price,
-      detail,
-      imgs,
-      pCategoryId,
-      categoryId,
-    } = this.product;
+    const { name, desc, price, detail, imgs, pCategoryId, categoryId } =
+      this.product;
     const categoryIds = [];
     if (isUpdate) {
       //   console.log("pCategoryId", pCategoryId);
@@ -178,10 +220,7 @@ export default class AddUpdate extends Component {
 
     return (
       <Card title={title} {...formItemLayout}>
-        <Form
-          onFinish={this.onFinish}
-          onFinishFailed={onFinishFailed}
-        >
+        <Form onFinish={this.onFinish} onFinishFailed={onFinishFailed}>
           <Item
             name="name"
             label="商品名称"
@@ -230,11 +269,7 @@ export default class AddUpdate extends Component {
               changeOnSelect
             ></Cascader>
           </Item>
-          <Item
-            name="imgs"
-            label="商品图片"
-            initialValue={name}
-          >
+          <Item name="imgs" label="商品图片" initialValue={name}>
             <PicturesWall ref={this.pw} imgs={imgs} />
           </Item>
           {/* 输入的是数值,指定type */}
@@ -242,9 +277,9 @@ export default class AddUpdate extends Component {
             name="detail"
             label="商品详情"
             labelCol={{ span: 3 }}
-            wrapperCol= {{ span: 20 }}
+            wrapperCol={{ span: 20 }}
           >
-            <RichTextEditor ref={this.editor } detail={detail}/>
+            <RichTextEditor ref={this.editor} detail={detail} />
           </Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
@@ -259,3 +294,4 @@ export default class AddUpdate extends Component {
 
 /* 子组件调用父组件的方法:将父组件的方法以函数属性的形式传递给子组件,子组件就可以调用
 父组件调用子组件的方法 :在父组件忠通过ref得到子组件标签对象(组件对象),调用其方法*/
+export default withRouter(AddUpdate);
