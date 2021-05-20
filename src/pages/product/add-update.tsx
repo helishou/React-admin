@@ -2,7 +2,7 @@
  * @Author: helishou
  * @Date: 2021-05-20 10:44:37
  * @Last Modified by: helishou
- * @Last Modified time: 2021-05-20 14:50:17
+ * @Last Modified time: 2021-05-20 20:31:17
  */
 import React, { Component, RefObject } from "react";
 import { Card, Form, Input, Cascader, Button, message } from "antd";
@@ -26,8 +26,8 @@ interface ProductAddUpdateState {
 }
 
 interface ProductAddUpdateProps {
-  location:any;
-  imgs:any[]
+  location: Location;
+  imgs: any[];
 }
 
 type ProductAddUpdateRouteProps = ProductAddUpdateProps & RouteComponentProps;
@@ -53,6 +53,7 @@ class AddUpdate extends Component<
     cName1: "",
     cName2: "",
   };
+  onChange: ((value: CascaderValueType, selectedOptions?: CascaderOptionType[] | undefined) => void) | undefined;
 
   constructor(props: ProductAddUpdateRouteProps) {
     super(props);
@@ -130,7 +131,7 @@ class AddUpdate extends Component<
     this.isUpdate = !!product;
   }
   // onChange = (value, selectedOptions) => {
-    // console.log(value, selectedOptions);
+  // console.log(value, selectedOptions);
   // };
   /* 用来加载下面数字组 */
   loadData = async (selectedOptions) => {
@@ -200,7 +201,7 @@ class AddUpdate extends Component<
     const tailLayout = {
       wrapperCol: { offset: 8, span: 16 },
     };
-    const onFinishFailed = (errorInfo) => {
+    const onFinishFailed = (errorInfo: any): void => {
       console.log("Failed:", errorInfo);
     };
 

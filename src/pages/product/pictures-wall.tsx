@@ -3,6 +3,8 @@ import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import {reqDelImg} from '../../api'
 
+
+interface Iprops
 /* 用于图片上传的组件 */
 function getBase64(file) {
   return new Promise((resolve, reject) => {
