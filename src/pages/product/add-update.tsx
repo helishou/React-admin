@@ -2,7 +2,7 @@
  * @Author: helishou
  * @Date: 2021-05-20 10:44:37
  * @Last Modified by: helishou
- * @Last Modified time: 2021-05-20 20:31:17
+ * @Last Modified time: 2021-05-21 16:49:10
  */
 import React, { Component, RefObject } from "react";
 import { Card, Form, Input, Cascader, Button, message } from "antd";
@@ -10,11 +10,11 @@ import LinkButton from "../../component/link-button";
 import { RollbackOutlined } from "@ant-design/icons";
 import { reqCategorys, reqAddProduct } from "../../api";
 import PicturesWall from "./pictures-wall";
-import PropTypes from "prop-types";
 import RichTextEditor from "./rich-text-editor";
 import { ProductsModel } from "./Model";
 import { CategoryModel } from "../category/Model";
 import { RouteComponentProps, withRouter } from "react-router";
+import { CascaderOptionType, CascaderValueType } from "antd/lib/cascader";
 interface Options {
   value: string;
   label: string;
@@ -26,11 +26,11 @@ interface ProductAddUpdateState {
 }
 
 interface ProductAddUpdateProps {
-  location: Location;
   imgs: any[];
 }
 
-type ProductAddUpdateRouteProps = ProductAddUpdateProps & RouteComponentProps;
+type ProductAddUpdateRouteProps = ProductAddUpdateProps &
+  RouteComponentProps<any, any, any>;
 
 const Item = Form.Item;
 const TextArea = Input.TextArea;
@@ -53,7 +53,12 @@ class AddUpdate extends Component<
     cName1: "",
     cName2: "",
   };
-  onChange: ((value: CascaderValueType, selectedOptions?: CascaderOptionType[] | undefined) => void) | undefined;
+  onChange:
+    | ((
+        value: CascaderValueType,
+        selectedOptions?: CascaderOptionType[] | undefined
+      ) => void)
+    | undefined;
 
   constructor(props: ProductAddUpdateRouteProps) {
     super(props);
@@ -93,6 +98,9 @@ class AddUpdate extends Component<
       label: c.name,
       isLeaf: false,
     }));
+    if (this.product === undefined || options === undefined) {
+      return options;
+    }
     //如果是一个二级分类列表
     const { isUpdate, product } = this;
     const { pCategoryId } = product;
@@ -134,7 +142,7 @@ class AddUpdate extends Component<
   // console.log(value, selectedOptions);
   // };
   /* 用来加载下面数字组 */
-  loadData = async (selectedOptions) => {
+  loadData = async (selectedOptions: any) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     //显示loading
     targetOption.loading = true;
@@ -142,7 +150,7 @@ class AddUpdate extends Component<
     //获取二级分类列表
     const subCategorys = await this.getCategorys(targetOption.value);
     if (subCategorys && subCategorys.length > 0) {
-      const cOptions = subCategorys.map((c) => ({
+      const cOptions = subCategorys.map((c: any) => ({
         //注意小括号,生成二级列表
         value: c._id,
         label: c.name,
@@ -156,14 +164,15 @@ class AddUpdate extends Component<
     targetOption.loading = false;
     this.setState({ options: [...this.state.options] });
   };
-  onFinish = async (values) => {
+  onFinish = async (values: any) => {
     //调用接口请求函数去添加/更新
-    const imgs = this.pw.current.getImgs();
-    const detail = this.editor.current.getDetail();
+    const imgs = this.pw.current!.getImgs();
+    const detail = this.editor.current!.getDetail();
     const { name, desc, price, categoryIds } = values;
     const pCategoryId = categoryIds[0];
     const categoryId = categoryIds[1];
     const product = {
+      _id:1,
       name,
       desc,
       price,
@@ -173,7 +182,7 @@ class AddUpdate extends Component<
       categoryId,
     };
     if (this.isUpdate) {
-      product._id = this.product._id;
+      product._id = this.product?._id!;
     }
     const result = await reqAddProduct(product);
     if (result.status === 0) {
@@ -207,9 +216,11 @@ class AddUpdate extends Component<
 
     // function onChange(value) {
     //   console.log(value);
-    // }
+    //
+
     const { name, desc, price, detail, imgs, pCategoryId, categoryId } =
-      this.product;
+      this.product!;
+
     const categoryIds = [];
     if (isUpdate) {
       //   console.log("pCategoryId", pCategoryId);

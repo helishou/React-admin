@@ -2,12 +2,12 @@
  * @Author: helishou 
  * @Date: 2021-05-20 10:44:34 
  * @Last Modified by: helishou
- * @Last Modified time: 2021-05-20 20:28:22
+ * @Last Modified time: 2021-05-21 16:47:13
  */
 export interface ProductsModel {
-  id?: number;
+  _id?: number;
   status: number;
-  imgs:string;
+  imgs:any;
 //   idStr?: string;
   name: string;
   desc: string;

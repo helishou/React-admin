@@ -1,10 +1,20 @@
+/*
+ * @Author: helishou
+ * @Date: 2021-05-21 16:52:22
+ * @Last Modified by: helishou
+ * @Last Modified time: 2021-05-21 17:36:23
+ */
 import React, { Component } from "react";
-import { Card, List, Message } from "antd";
+import { Card, List, message } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
-import { withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { reqCategory } from "../../api";
+import { UploadFile } from "antd/lib/upload/interface";
 
-class Detail extends Component {
+interface Ipros {}
+
+type IDetailPros = Ipros & RouteComponentProps<any,any,any>;
+class Detail extends Component<IDetailPros> {
   state = {
     cName1: "",
     cName2: "",
@@ -18,22 +28,24 @@ class Detail extends Component {
         const cName1 = result.name;
         this.setState({ cName1 });
       } else {
-        Message.error("请求分类失败");
+        message.error("请求分类失败");
       }
     } else {
-
-/*
+      /*
 一个一个发      
  const result1 = await reqCategory(categoryId);
       const result2 = await reqCategory(pCategoryId); */
-    //   一次发动多个请求
-    const results = await Promise.all([reqCategory(categoryId),reqCategory(pCategoryId)])
-      if ((results[0].status === 0) & (results[1].status === 0)) {
+      //   一次发动多个请求
+      const results = await Promise.all([
+        reqCategory(categoryId),
+        reqCategory(pCategoryId),
+      ]);
+      if (results[0].status === 0 && results[1].status === 0) {
         const cName1 = results[0].name;
         const cName2 = results[1].name;
         this.setState({ cName1, cName2 });
       } else {
-        Message.error("请求分类失败");
+        message.error("请求分类失败");
       }
     }
   }
@@ -47,12 +59,12 @@ class Detail extends Component {
       </span>
     );
     const itemLayout = {
-        labelCol:{span:6},
-        wrapperCol:{span:5}
-    }
+      labelCol: { span: 6 },
+      wrapperCol: { span: 5 },
+    };
     return (
-      <Card title={title} >
-        <List   {...itemLayout}>
+      <Card title={title}>
+        <List {...itemLayout}>
           <List.Item>
             <span className="left">商品名称:</span>
             <span style={{ marginLeft: 0 }}>{name}</span>
@@ -77,15 +89,18 @@ class Detail extends Component {
           <List.Item>
             <span className="left">商品图片:</span>
             <span>
-              {imgs.map((img) => (
-                img?
-                <img
-                  key={img.name}
-                  className="product-img"
-                  alt={img.name}
-                  src={img.url}
-                ></img>:''
-              ))}
+              {imgs.map((img:UploadFile<any>) =>
+                img ? (
+                  <img
+                    key={img.name}
+                    className="product-img"
+                    alt={img.name}
+                    src={img.url}
+                  ></img>
+                ) : (
+                  ""
+                )
+              )}
             </span>
           </List.Item>
           <List.Item style={{ float: "left" }}>
