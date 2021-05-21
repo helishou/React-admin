@@ -2,14 +2,14 @@
  * @Author: helishou
  * @Date: 2021-05-21 17:09:25
  * @Last Modified by: helishou
- * @Last Modified time: 2021-05-21 17:47:37
+ * @Last Modified time: 2021-05-21 18:10:55
  */
 import React, { Component } from "react";
 import { Card, Select, Input, Button, Table, message } from "antd";
 import LinkButton from "../../component/link-button";
 import { reqProducts, reqProductsSearch, reqUpdateStatus } from "../../api/";
 import { PAGE_SIZE } from "../../utils/constant";
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from "react-router";
 interface IHomeProps {}
 type ProductHomeRouteProps = IHomeProps & RouteComponentProps;
 /* 默认子路由 */
@@ -70,14 +70,14 @@ class Home extends Component<ProductHomeRouteProps> {
         title: "价格",
         dataIndex: "price",
         key: "price",
-        render: (price:string) => "￥" + price,
+        render: (price: string) => "￥" + price,
       },
       {
         width: 150,
         title: "状态",
         dataIndex: "status",
         key: "status",
-        render: (status:number, _id:string) => {
+        render: (status: number, _id: number) => {
           const newStatus = status === 1 ? 2 : 1;
           return (
             <span>
@@ -97,7 +97,15 @@ class Home extends Component<ProductHomeRouteProps> {
         title: "操作",
         dataIndex: "name,desc,price,detail,imgs",
         key: "action",
-        render: (name:any, desc:any, price:any, detail:any, imgs:any, categoryId:any, pCategoryId:any) => {
+        render: (
+          name: any,
+          desc: any,
+          price: any,
+          detail: any,
+          imgs: any,
+          categoryId: any,
+          pCategoryId: any
+        ) => {
           return (
             <span>
               <LinkButton
@@ -120,7 +128,7 @@ class Home extends Component<ProductHomeRouteProps> {
       },
     ];
   }
-  updateStatus = async (productId:number, status:number) => {
+  updateStatus = async (productId: number, status: number) => {
     const result = await reqUpdateStatus(productId, status);
     // console.log(result)
     if (result.status === 0) {
@@ -189,4 +197,4 @@ class Home extends Component<ProductHomeRouteProps> {
     );
   }
 }
-export default withRouter(Home)
+export default withRouter(Home);
