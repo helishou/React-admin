@@ -1,16 +1,20 @@
 import React, { PureComponent } from "react";
 import { Form, Input, Select } from "antd";
 import PropTypes from "prop-types";
+import { IRoleModel, IUserModel } from "./Model";
 
+interface IProps {
+  roles: IRoleModel[];
+  user: IUserModel|null;
+}
 const Item = Form.Item;
-
-export default class UserForm extends PureComponent {
+export default class UserForm extends PureComponent<IProps> {
   static propTypes = {
     roles: PropTypes.array.isRequired,
     user: PropTypes.object,
   };
   state = {};
-  onValuesChange = (values) => {
+  onValuesChange = (values: any) => {
     this.setState(values);
   };
   addOrUpdateUser = () => {
@@ -27,34 +31,34 @@ export default class UserForm extends PureComponent {
       wrapperCol: { span: 10 }, //右侧包裹输入框宽度
     };
     const { roles } = this.props;
-    const user = this.props.user
+    const user = this.props.user;
     // console.log(roles)
     return (
       <Form {...formItemLayout} onValuesChange={this.onValuesChange}>
         <Item
           label="用户名"
           name="username"
-          rules={[{ required: true, message: "用户名必须输入!" }]}
-          initialValue={user.username}
+          rules={[{ required: true, message: "用户名必须输入?" }]}
+          initialValue={user?.username}
         >
           <Input placeholder="请输入用户名"></Input>
         </Item>
-        {
-            user._id?null:<Item
+        {user?._id ? null : (
+          <Item
             label="密码"
             name="password"
             rules={[{ required: true, message: "密码必须输入!" }]}
-            initialValue={user.password}
+            initialValue={user?.password}
           >
             <Input type="password" placeholder="请输入密码"></Input>
           </Item>
-        }
-        
+        )}
+
         <Item
           label="手机号"
           name="phone"
           rules={[{ required: true, message: "手机号必须输入!" }]}
-          initialValue={user.phone}
+          initialValue={user?.phone}
         >
           <Input
             //   type='password'
@@ -65,7 +69,7 @@ export default class UserForm extends PureComponent {
           label="邮箱"
           name="email"
           rules={[{ required: true, message: "邮箱必须输入!" }]}
-          initialValue={user.email}
+          initialValue={user?.email}
         >
           <Input
             //   type='password'
@@ -76,10 +80,10 @@ export default class UserForm extends PureComponent {
           label="角色"
           name="role_id"
           rules={[{ required: true, message: "角色必须选择!" }]}
-          initialValue={user.role_id}
+          initialValue={user?.role_id}
         >
           <Select placeholder="请选择角色">
-            {roles.map((role) => (
+            {roles.map((role: IRoleModel) => (
               <Select.Option key={role._id} value={role._id}>
                 {role.name}
               </Select.Option>

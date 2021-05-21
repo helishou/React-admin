@@ -7,6 +7,10 @@ import { UploadChangeParam } from "antd/lib/upload";
 interface Iprops {
   imgs: UploadFile<any>[];
 }
+interface IImage {
+  name: string;
+  url: string;
+}
 interface IState {
   previewVisible: boolean;
   previewImage: string; //大图的url
@@ -32,30 +36,33 @@ export default class PicturesWall extends React.Component<Iprops, IState> {
     super(props);
     let fileList: any[] = [];
     const { imgs } = this.props;
-    // console.log(imgs);
+    console.log("imgs", imgs);
+    console.log("fileList", fileList);
     //   debugger
     if (imgs && imgs.length > 0) {
-      fileList = imgs.map((img, index) =>
-        img
+      fileList = imgs.map((img, index) => {
+        console.log("img", img);
+        return img
           ? {
               uid: -index,
               name: img.name,
               status: 0,
               url: img.url,
             }
-          : {}
-      );
+          : {};
+      });
     }
+    console.log("fileList", fileList);
     this.state = {
       previewVisible: false, //标识是否大图预览
       previewImage: "", //大图的url
       previewTitle: "",
-      fileList, //
+      fileList: fileList, //
     };
   }
   /* 获取所有已上传图片文件名的数组 */
   getImgs = () => {
-    return this.state.fileList.map((file) => file.name);
+    return this.state.fileList;
   };
   /* 隐藏modal */
   handleCancel = () => this.setState({ previewVisible: false });
@@ -79,11 +86,12 @@ export default class PicturesWall extends React.Component<Iprops, IState> {
       const result = file.response;
       if (result.status === 0) {
         message.success("上传图片成功!");
-        const { name, url } = result;
+        const { name, url } = result.data;
         //   debugger
         file = fileList[fileList.length - 1];
         file.name = name;
         file.url = url;
+        console.log(result);
       } else {
         message.error("上传图片失败");
       }

@@ -1,18 +1,30 @@
-import React, { Component } from "react";
+import React, { Component, RefObject } from "react";
 import { Button, Card, Table, Modal, message } from "antd";
 import { PAGE_SIZE } from "../../utils/constant";
 import { formateDate } from "../../utils/dataUtils";
 import LinkButton from "../../component/link-button";
 import { reqDelUser, reqUsers, reqAddOrUpdateUser } from "../../api";
 import UserForm from "./user-form";
-export default class Users extends Component {
-  state = {
+import {  IUserModel } from "./Model";
+interface IProps {}
+interface Istate {
+  users: IUserModel[] ; //所有用户列表
+  showStatus: number;
+  roles: [];
+  user: IUserModel|null;
+}
+
+export default class Users extends Component<IProps, Istate> {
+  private us: RefObject<any>;
+  private columns: any[] = [];
+  private roleNames: any[] = [];
+  state: Istate = {
     users: [], //所有用户列表
     showStatus: 0,
     roles: [],
-    user: {},
+    user: null,
   };
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.us = React.createRef();
   }
@@ -33,12 +45,12 @@ export default class Users extends Component {
       {
         title: "注册时间",
         dataIndex: "create_time",
-        render: (create_time) => formateDate(create_time),
+        render: (create_time: number) => formateDate(create_time),
       },
       {
         title: "所属角色",
         dataIndex: "role_id",
-        render: (role_id) =>
+        render: (role_id: number) =>
           // {
           //     const role=this.state.roles.find(role=>role._id===role_id)
           //     return role?role.name:''}
@@ -47,7 +59,7 @@ export default class Users extends Component {
       },
       {
         title: "操作",
-        render: (user) => (
+        render: (user: any) => (
           <span>
             <LinkButton onClick={() => this.showUpdate(user)}>修改</LinkButton>
             <LinkButton onClick={() => this.deleteUser(user)}>删除</LinkButton>
@@ -57,14 +69,14 @@ export default class Users extends Component {
     ];
   };
   /* 根据role数据,生成包含所有角色名的对象 */
-  initRoles = (roles) => {
+  initRoles = (roles: any[]) => {
     this.roleNames = roles.reduce((pre, role) => {
       pre[role._id] = role.name ? role.name : "";
       return pre;
     }, []);
   };
   /* 删除指定用户 */
-  deleteUser = (user) => {
+  deleteUser = (user: IUserModel) => {
     Modal.confirm({
       title: `确认删除${user.username}吗?`,
 
@@ -94,23 +106,23 @@ export default class Users extends Component {
     //收集数据
     let user = this.us.current.addOrUpdateUser();
     user.create_time = Date.now();
-    if (this.state.user._id) {
-      user._id = this.state.user._id;
+    if (this.state.user?._id) {
+      user._id = this.state.user?._id;
     }
     //   2.提交添加的请求
     const result = await reqAddOrUpdateUser(user);
     // 3.更新列表显示
     if (result.status === 0) {
-      message.success(`${this.state.user._id?'修改':'添加'}角色成功`);
+      message.success(`${this.state.user?._id ? "修改" : "添加"}角色成功`);
       this.getUsers();
       this.setState({ showStatus: 0 });
     } else {
-      message.error(`${this.state.user._id?'修改':'添加'}角色失败`);
+      message.error(`${this.state.user?._id ? "修改" : "添加"}角色失败`);
     }
     // //console.log(user);
   };
-  showUpdate = (user) => {
-    this.setState({ showStatus: 1,user:user });
+  showUpdate = (user:IUserModel|null) => {
+    this.setState({ showStatus: 1, user: user });
   };
   UNSAFE_componentWillMount() {
     this.initColumns();
@@ -128,7 +140,7 @@ export default class Users extends Component {
       <Button
         type="primary"
         onClick={() => {
-          this.setState({ showStatus: 1, user: {} });
+          this.setState({ showStatus: 1, user: null });
         }}
       >
         创建用户
@@ -147,7 +159,7 @@ export default class Users extends Component {
           bordered
         />
         <Modal
-          title={this.state.user._id ? "修改用户" : "添加用户"}
+          title={this.state.user?._id ? "修改用户" : "添加用户"}
           visible={showStatus === 1}
           onOk={this.addOrUpdateuser}
           onCancel={this.handleCancel}

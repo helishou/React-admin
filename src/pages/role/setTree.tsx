@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { Tree, Input, Form } from "antd";
 import menuConfig from "../../config/menuConfig";
-import PropTypes from "prop-types";
-
-export default class SetTree extends Component {
-  static propTypes = {
-    role: PropTypes.object.isRequired,
-  };
-
-  constructor(props) {
+import { CRole } from "./Model";
+interface IProps {
+  role: CRole;
+}
+interface IState {
+  checkedKeys: any;
+}
+export default class SetTree extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     const { menus } = this.props.role;
     // console.log(menus)
@@ -37,8 +38,8 @@ export default class SetTree extends Component {
     const { role } = this.props;
     const { checkedKeys } = this.state;
     const treeData = menuConfig;
-  
-    const onCheck = (checkedKeys) => {
+
+    const onCheck = (checkedKeys: any) => {
       // console.log("onCheck", checkedKeys);
       this.setState({ checkedKeys: checkedKeys });
     };

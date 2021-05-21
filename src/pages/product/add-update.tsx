@@ -2,7 +2,7 @@
  * @Author: helishou
  * @Date: 2021-05-20 10:44:37
  * @Last Modified by: helishou
- * @Last Modified time: 2021-05-21 16:49:10
+ * @Last Modified time: 2021-05-22 00:48:59
  */
 import React, { Component, RefObject } from "react";
 import { Card, Form, Input, Cascader, Button, message } from "antd";
@@ -172,7 +172,7 @@ class AddUpdate extends Component<
     const pCategoryId = categoryIds[0];
     const categoryId = categoryIds[1];
     const product = {
-      _id:1,
+      _id: 1,
       name,
       desc,
       price,
@@ -184,6 +184,7 @@ class AddUpdate extends Component<
     if (this.isUpdate) {
       product._id = this.product?._id!;
     }
+    // console.log(product);
     const result = await reqAddProduct(product);
     if (result.status === 0) {
       message.success(`${this.isUpdate ? "更新" : "添加"}商品成功`);
@@ -217,9 +218,9 @@ class AddUpdate extends Component<
     // function onChange(value) {
     //   console.log(value);
     //
-
-    const { name, desc, price, detail, imgs, pCategoryId, categoryId } =
-      this.product!;
+    console.log(this.product);
+    const { name, desc, price, detail, imgs, pCategoryId, categoryId } = this
+      .product as ProductsModel;
 
     const categoryIds = [];
     if (isUpdate) {

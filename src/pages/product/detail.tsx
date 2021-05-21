@@ -2,7 +2,7 @@
  * @Author: helishou
  * @Date: 2021-05-21 16:52:22
  * @Last Modified by: helishou
- * @Last Modified time: 2021-05-21 17:36:23
+ * @Last Modified time: 2021-05-22 00:47:55
  */
 import React, { Component } from "react";
 import { Card, List, message } from "antd";
@@ -51,6 +51,7 @@ class Detail extends Component<IDetailPros> {
   }
   render() {
     //读取携带过来的state
+    console.log(this.props.location.state.desc);
     const { name, desc, price, detail, imgs } = this.props.location.state.desc;
     const title = (
       <span>

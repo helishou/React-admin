@@ -2,7 +2,7 @@
  * @Author: helishou
  * @Date: 2021-05-21 17:09:25
  * @Last Modified by: helishou
- * @Last Modified time: 2021-05-21 19:45:28
+ * @Last Modified time: 2021-05-22 00:05:55
  */
 import React, { Component } from "react";
 import { Card, Select, Input, Button, Table, message } from "antd";
@@ -43,6 +43,7 @@ class Home extends Component<ProductHomeRouteProps> {
     }
     this.setState({ loading: false });
     if (result.status === 0) {
+      console.log(result.data);
       this.setState({
         products: result.data.list,
         total: result.data.total,
