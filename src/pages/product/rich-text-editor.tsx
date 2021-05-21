@@ -6,11 +6,17 @@ import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PropTypes from "prop-types";
 
-export default class RichTextEditor extends Component {
+interface IState {
+  editorState: EditorState;
+}
+interface IPros {
+  detail: string;
+}
+export default class RichTextEditor extends Component<IPros, IState> {
   static propTypes = {
     detail: PropTypes.string,
   };
-  uploadImageCallBack(file) {
+  uploadImageCallBack(file: any) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open("POST", "/manage/img/upload");
@@ -32,9 +38,9 @@ export default class RichTextEditor extends Component {
   state = {
     editorState: EditorState.createEmpty(), //创建了空的编辑对象
   };
-  constructor(props) {
+  constructor(props: IPros) {
     super(props);
-    const { detail } = this.props;
+    const { detail } = props;
     let contentBlock;
     if (!detail) {
       contentBlock = htmlToDraft("");
@@ -53,7 +59,7 @@ export default class RichTextEditor extends Component {
     }
   }
 
-  onEditorStateChange = (editorState) => {
+  onEditorStateChange = (editorState: EditorState) => {
     this.setState({
       editorState,
     });
