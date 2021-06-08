@@ -2,10 +2,11 @@
 // 封装axios
 import axios from "axios";
 import { message } from "antd";
+import { BaseUrl } from "../utils/constant";
 //优化:统一处理请求异常
 //在外层包一个promise对象
 //在请求出错时,补reject(error),自己提示问题
-axios.defaults.baseURL = "http://120.55.193.14:5000";
+axios.defaults.baseURL = BaseUrl;
 // 添加响应拦截器
 
 export default function ajax(url, data = {}, type = "GET") {
