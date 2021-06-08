@@ -58,7 +58,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000",
   "devDependencies": {
     "@types/draft-js": "^0.11.3",
     "@types/draftjs-to-html": "^0.8.0",

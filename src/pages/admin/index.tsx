@@ -1,3 +1,12 @@
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-19 17:27:55
+ * @LastEditTime : 2021-06-08 10:42:22
+ * @LastEditors  : helishou
+ * @Description  : 主路由
+ * @FilePath     : \src\pages\admin\index.tsx
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
 import React, { Component } from "react";
 import { Redirect, Switch, Route } from "react-router-dom";
 import { Layout } from "antd";

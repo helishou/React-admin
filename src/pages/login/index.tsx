@@ -127,7 +127,7 @@ class Login extends PureComponent<Props> {
                 <Input
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
-                  placeholder="密码:helishou"
+                  placeholder="密码:86699596"
                   style={{ borderRadius: "5px" }}
                 />
               </Form.Item>
