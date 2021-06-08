@@ -1,0 +1,31 @@
+.home {
+  display: flex;
+  padding: 24px;
+  background: #fff;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.home .home-card {
+  flex: 1;
+  height: 80%;
+}
+.home .home-center {
+  justify-content: center;
+  text-align: center;
+  margin-right: 10%;
+  flex: 2;
+}
+.home .home-center div {
+  padding: 0px 50px;
+  font-size: 30px;
+  color: red;
+  font-weight: 800;
+  text-overflow: ellipsis;
+}
+.home .home-table-right {
+  margin-top: 15%;
+  flex: 1;
+  height: 100%;
+}
