@@ -85,7 +85,7 @@ class Login extends PureComponent<Props> {
             >
               <Form.Item
                 name="username"
-                initialValue="admin"
+                // initialValue="admin"
                 rules={[
                   {
                     required: true,
@@ -113,7 +113,7 @@ class Login extends PureComponent<Props> {
               </Form.Item>
               <Form.Item
                 name="password"
-                initialValue="wxy"
+                // initialValue="wxy"
                 rules={[
                   {
                     required: true,
